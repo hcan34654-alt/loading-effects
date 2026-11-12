@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>分页加载 · 靛色</title>
+<!-- 点击页码后该页码内转圈，数据回来再切换为当前页。　节奏：每页约 2 秒 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#5155D7;--ld-main-d:#4045CD;--ld-accent:#8285D9;--ld-accent-l:#BABCF0;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#2A2EAD;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 分页加载 */
+.ld-pager{display:flex;gap:6px}
+.ld-pager span{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;border:1px solid var(--ld-line);background:#fff;font:600 13px var(--ld-num);color:var(--ld-ink2);transition:.25s}
+.ld-pager span.on{border-color:var(--ld-main);background:var(--ld-main);color:#fff}
+.ld-pager span.ld{border-color:var(--ld-main);color:transparent;position:relative}
+.ld-pager span.ld::after{content:"";position:absolute;width:14px;height:14px;box-sizing:border-box;border-radius:50%;border:2px solid var(--ld-track);border-top-color:var(--ld-main);animation:ld-rot .8s linear infinite}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-pager,.ld-pager *,.ld-pager *::before,.ld-pager *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-pager" role="navigation" aria-label="分页"><span>‹</span><span class="pg on">1</span><span class="pg">2</span><span class="pg">3</span><span class="pg">4</span><span>›</span></div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const P=[...root.querySelectorAll('.ld-pager .pg')];let k=0;
+  while(true){
+    await W(1200);const n=(k+1)%P.length;
+    P[n].classList.add('ld');await W(900);
+    P[k].classList.remove('on');P[n].classList.remove('ld');P[n].classList.add('on');k=n;
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

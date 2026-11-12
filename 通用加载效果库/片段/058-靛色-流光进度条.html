@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>流光进度条 · 靛色</title>
+<!-- 进度条内有渐变色流动，表面扫过一道高光。　节奏：1.6 秒流动 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#5155D7;--ld-main-d:#4045CD;--ld-accent:#8285D9;--ld-accent-l:#BABCF0;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#2A2EAD;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 流光进度条 */
+.ld-floww{width:240px}
+.ld-flow{position:relative;height:8px;border-radius:4px;background:var(--ld-track);overflow:hidden}
+.ld-flow i{position:absolute;inset:0 28% 0 0;border-radius:inherit;background:linear-gradient(90deg,var(--ld-main),var(--ld-accent),var(--ld-main));background-size:200% 100%;animation:ld-flow 1.6s linear infinite}
+.ld-flow i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);transform:translateX(-100%);animation:ld-gloss 1.8s ease-in-out infinite}
+@keyframes ld-flow{to{background-position:-200% 0}}
+@keyframes ld-gloss{to{transform:translateX(100%)}}
+.ld-cap{margin:12px 0 0;font-size:12.5px;color:var(--ld-ink2);text-align:center}
+@media (prefers-reduced-motion: reduce){.ld-flow,.ld-flow *,.ld-flow *::before,.ld-flow *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-floww" role="progressbar" aria-label="加载中" aria-valuenow="72"><div class="ld-flow"><i></i></div><p class="ld-cap">已完成 72%</p></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

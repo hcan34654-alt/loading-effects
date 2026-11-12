@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>长按确认 · 红色</title>
+<!-- 按住时外圈进度走满才算确认，中途松手作废。用于删除等不可撤销的操作。　节奏：3.4 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E31C29;--ld-main-d:#C91F2A;--ld-accent:#DC4F58;--ld-accent-l:#F17E86;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A3161F;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 长按确认 */
+.ld-hold{display:flex;flex-direction:column;align-items:center;gap:10px}
+.ld-hold .w{position:relative;display:grid;place-items:center;width:96px;height:96px}
+.ld-hold .ring{position:absolute;inset:0;width:96px;height:96px;transform:rotate(-90deg)}
+.ld-hold .ring circle{fill:none;stroke-width:5}
+.ld-hold .tr{stroke:var(--ld-track)}
+.ld-hold .pr{stroke:var(--ld-main);stroke-linecap:round;stroke-dasharray:100;animation:ld-hp 3.4s linear infinite}
+.ld-hold .btn{display:grid;place-items:center;width:70px;height:70px;border-radius:50%;background:var(--ld-main-d);color:#fff;font-size:13px;font-weight:600;animation:ld-hb 3.4s var(--ld-ease) infinite}
+.ld-hold .btn>*{grid-area:1/1}
+.ld-hold .btn span{animation:ld-hl 3.4s infinite}
+.ld-hold .ck{fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.ld-hold .ck{width:30px;height:30px}
+.ld-hold .ck path{stroke-dasharray:16;animation:ld-hc 3.4s infinite}
+.ld-hold p{margin:0;font-size:12px;color:var(--ld-mute)}
+@keyframes ld-hp{0%,12%{stroke-dashoffset:100;opacity:1}58%,88%{stroke-dashoffset:0;opacity:1}96%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes ld-hb{0%,10%{transform:scale(1);background:var(--ld-main-d)}14%,58%{transform:scale(.93);background:var(--ld-main-d)}64%{transform:scale(1.05);background:var(--ld-ok)}70%,90%{transform:scale(1);background:var(--ld-ok)}98%,100%{transform:scale(1);background:var(--ld-main-d)}}
+@keyframes ld-hl{0%,58%{opacity:1}62%,92%{opacity:0}100%{opacity:1}}
+@keyframes ld-hc{0%,60%{stroke-dashoffset:16}70%,90%{stroke-dashoffset:0}96%,100%{stroke-dashoffset:16}}
+@media (prefers-reduced-motion: reduce){.ld-hold,.ld-hold *,.ld-hold *::before,.ld-hold *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-hold" role="status" aria-label="长按确认删除">
+  <div class="w"><svg class="ring" viewBox="0 0 96 96"><circle class="tr" cx="48" cy="48" r="44"/><circle class="pr" pathLength="100" cx="48" cy="48" r="44"/></svg>
+    <span class="btn"><span>长按删除</span><svg class="ck" viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7"/></svg></span></div>
+  <p>按住 1.5 秒确认</p>
+</div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

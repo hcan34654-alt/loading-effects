@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>列表逐条进入 · 粉色</title>
+<!-- 数据到位后，每行间隔 120 毫秒依次上移淡入。　节奏：3.2 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E52A81;--ld-main-d:#D52175;--ld-accent:#DF5E9A;--ld-accent-l:#F392BF;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#AD175D;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 列表逐条进入 */
+.ld-stagger{display:flex;flex-direction:column;gap:8px;width:240px}
+.ld-stagger .row{display:flex;align-items:center;justify-content:space-between;height:38px;padding:0 14px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(20,24,31,.05);font-size:13px;color:var(--ld-ink2);opacity:0;animation:ld-in 3.2s var(--ld-ease) infinite}
+.ld-stagger .row b{font-family:var(--ld-num);color:var(--ld-ink)}
+.ld-stagger .row:nth-child(2){animation-delay:.12s}
+.ld-stagger .row:nth-child(3){animation-delay:.24s}
+.ld-stagger .row:nth-child(4){animation-delay:.36s}
+@keyframes ld-in{0%{opacity:0;transform:translateY(12px)}14%,82%{opacity:1;transform:none}94%,100%{opacity:0;transform:none}}
+@media (prefers-reduced-motion: reduce){.ld-stagger,.ld-stagger *,.ld-stagger *::before,.ld-stagger *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-stagger"><div class="row">访问量<b>128</b></div><div class="row">新增用户<b>76</b></div><div class="row">订单数<b>68</b></div><div class="row">退款数<b>112</b></div></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

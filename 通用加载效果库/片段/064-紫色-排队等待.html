@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>排队等待 · 紫色</title>
+<!-- 显示前方排队数量并逐步减少，轮到时给出提示。　节奏：约 7 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#8C49CF;--ld-main-d:#803AC6;--ld-accent:#A477D2;--ld-accent-l:#CAAAEA;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#662CA0;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 排队等待 */
+.ld-queue{display:flex;flex-direction:column;align-items:center;gap:10px;width:240px;text-align:center}
+.ld-queue small{font-size:12px;letter-spacing:.12em;color:var(--ld-mute)}
+.ld-queue .num{display:flex;align-items:baseline;gap:6px;height:52px;font-size:14px;color:var(--ld-ink2)}
+.ld-queue .n{display:inline-block;min-width:1.4em;font:800 48px/1 var(--ld-num);color:var(--ld-main);font-variant-numeric:tabular-nums}
+.ld-queue .n.tick{animation:ld-tick .35s var(--ld-ease)}
+.ld-queue .num.me .n{font-size:26px;line-height:52px;color:var(--ld-ok);min-width:0}
+.ld-queue .num.me .pre{display:none}
+.ld-queue .lane{display:flex;gap:8px}
+.ld-queue .lane i{width:9px;height:9px;border-radius:50%;background:#DDE1E8;animation:ld-step 1.2s ease-in-out infinite}
+.ld-queue .lane i:nth-child(2){animation-delay:.1s}.ld-queue .lane i:nth-child(3){animation-delay:.2s}
+.ld-queue .lane i:nth-child(4){animation-delay:.3s}
+.ld-queue .lane i:last-child{background:var(--ld-main);animation-delay:.4s;box-shadow:0 0 0 3px rgba(140,73,207,.15)}
+.ld-queue p{margin:0;font-size:12.5px;color:var(--ld-mute)}
+@keyframes ld-tick{0%{transform:translateY(-40%);opacity:0}100%{transform:none;opacity:1}}
+@keyframes ld-step{0%,100%{transform:translateX(0)}40%{transform:translateX(-5px)}}
+@media (prefers-reduced-motion: reduce){.ld-queue,.ld-queue *,.ld-queue *::before,.ld-queue *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-queue" role="status" aria-live="polite">
+  <small>排队中</small>
+  <div class="num"><span class="pre">前方</span><b class="n">23</b><span class="pre">人</span></div>
+  <div class="lane" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <p class="eta">预计等待约 1 分钟，可以先离开</p>
+</div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const num=root.querySelector('.ld-queue .num'),n=num.querySelector('.n'),eta=root.querySelector('.ld-queue .eta');
+  const show=v=>{n.textContent=v;n.classList.remove('tick');void n.offsetWidth;n.classList.add('tick');};
+  while(true){
+    num.classList.remove('me');let k=23;show(k);eta.textContent='预计等待约 1 分钟，可以先离开';await W(900);
+    while(k>0){k=Math.max(0,k-1-Math.floor(Math.random()*4));if(k>0){show(k);if(k<8)eta.textContent='马上就到你了';}await W(560);}
+    num.classList.add('me');show('轮到你了');eta.textContent='已开始处理，约 20 秒完成';await W(2200);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

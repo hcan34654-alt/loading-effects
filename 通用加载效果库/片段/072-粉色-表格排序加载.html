@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>表格排序加载 · 粉色</title>
+<!-- 点击表头后箭头位置转圈，表格内容变淡，新顺序回来后恢复。用于后台表格的排序、筛选。　节奏：每次约 2.6 秒 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E52A81;--ld-main-d:#D52175;--ld-accent:#DF5E9A;--ld-accent-l:#F392BF;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#AD175D;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 表格排序加载 */
+.ld-sort{width:250px;border-radius:12px;background:#fff;overflow:hidden;font-size:12.5px}
+.ld-sort .h,.ld-sort .r{display:flex;align-items:center;justify-content:space-between;height:36px;padding:0 14px}
+.ld-sort .h{background:#F7F8FA;color:var(--ld-mute)}
+.ld-sort .k{display:inline-flex;align-items:center;gap:4px;color:var(--ld-main);font-weight:600}
+.ld-sort .ic{position:relative;width:12px;height:12px}
+.ld-sort .ic>*{position:absolute;inset:0;transition:opacity .2s,transform .3s}
+.ld-sort .ar{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ld-sort .sp{flex:none;display:inline-block;box-sizing:border-box;width:12px;height:12px;border-radius:50%;border:2px solid var(--ld-track);border-top-color:var(--ld-main);animation:ld-rot .8s linear infinite}
+.ld-sort .sp{opacity:0}
+.ld-sort.asc .ar{transform:rotate(180deg)}
+.ld-sort[data-s=load] .ar{opacity:0}
+.ld-sort[data-s=load] .sp{opacity:1}
+.ld-sort .r{border-top:1px solid #F1F2F5;color:var(--ld-ink2);transition:opacity .25s}
+.ld-sort .r b{font-family:var(--ld-num);color:var(--ld-ink);font-variant-numeric:tabular-nums}
+.ld-sort[data-s=load] .r{opacity:.35}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-sort,.ld-sort *,.ld-sort *::before,.ld-sort *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-sort" data-s="idle"><div class="h"><span>区域</span><span class="k">销售额<span class="ic"><svg class="ar" viewBox="0 0 12 12"><path d="M6 2v8M3 7l3 3 3-3"/></svg><i class="sp"></i></span></span></div><div class="r"><span></span><b></b></div><div class="r"><span></span><b></b></div><div class="r"><span></span><b></b></div><div class="r"><span></span><b></b></div></div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const c=root.querySelector('.ld-sort'),R=[...c.querySelectorAll('.r')];
+  const D=[['华东一区','86,200'],['华南二区','54,900'],['华北一区','31,400'],['西南一区','12,800']];
+  let asc=false;
+  const fill=()=>{(asc?[...D].reverse():D).forEach((d,i)=>{R[i].firstChild.textContent=d[0];R[i].lastChild.textContent=d[1];});c.classList.toggle('asc',asc);};
+  fill();
+  while(true){
+    c.dataset.s='idle';await W(1500);
+    c.dataset.s='load';await W(1100);
+    asc=!asc;fill();
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

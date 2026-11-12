@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>下拉刷新 · 蓝色</title>
+<!-- 下拉时箭头翻转，松手后转圈，完成后列表回位。　节奏：3.2 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2F79DB;--ld-main-d:#296EC8;--ld-accent:#6093D7;--ld-accent-l:#90B9ED;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1E57A2;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 下拉刷新 */
+.ld-pull{position:relative;width:230px;height:200px;overflow:hidden;border-radius:16px;background:#FAFAFB;box-shadow:0 8px 24px rgba(20,24,31,.07)}
+.ld-pull .ind{position:absolute;left:50%;top:14px;width:26px;height:26px;margin-left:-13px}
+.ld-pull .ar{position:absolute;inset:0;width:26px;height:26px;fill:none;stroke:var(--ld-mute);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:0;animation:ld-ar 3.2s var(--ld-ease) infinite}
+.ld-pull .sp{position:absolute;inset:3px;border-radius:50%;border:2.5px solid var(--ld-track);border-top-color:var(--ld-main);opacity:0;animation:ld-rot .8s linear infinite,ld-spshow 3.2s infinite}
+.ld-pull .list{position:absolute;inset:0;padding:12px;display:flex;flex-direction:column;gap:8px;background:#fff;animation:ld-list 3.2s var(--ld-ease) infinite}
+.ld-pull .row{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:#F7F8FA}
+.ld-pull .row i{width:26px;height:26px;border-radius:50%;background:#E9ECF1}
+.ld-pull .row b{flex:1;height:8px;border-radius:4px;background:#E3E6EC}
+.ld-pull .row:first-child i{background:linear-gradient(135deg,var(--ld-accent-l),var(--ld-accent))}
+@keyframes ld-list{0%,8%{transform:none}26%{transform:translateY(58px)}32%,70%{transform:translateY(50px)}84%,100%{transform:none}}
+@keyframes ld-ar{0%,8%{opacity:0;transform:rotate(0)}14%{opacity:1;transform:rotate(0)}22%{transform:rotate(180deg)}27%{opacity:1;transform:rotate(180deg)}31%,100%{opacity:0;transform:rotate(180deg)}}
+@keyframes ld-spshow{0%,28%{opacity:0}33%,70%{opacity:1}76%,100%{opacity:0}}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-pull,.ld-pull *,.ld-pull *::before,.ld-pull *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-pull" role="status" aria-label="下拉刷新">
+  <div class="ind" aria-hidden="true">
+    <svg class="ar" viewBox="0 0 26 26"><path d="M13 6v13M8 14l5 5 5-5"/></svg>
+    <span class="sp"></span>
+  </div>
+  <div class="list">
+    <div class="row"><i></i><b></b></div><div class="row"><i></i><b></b></div>
+    <div class="row"><i></i><b></b></div><div class="row"><i></i><b></b></div>
+  </div>
+</div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

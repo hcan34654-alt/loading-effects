@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>对话骨架 · 粉色</title>
+<!-- 左右交错的气泡骨架。用于聊天记录加载。　节奏：1.4 秒 shimmer -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E52A81;--ld-main-d:#D52175;--ld-accent:#DF5E9A;--ld-accent-l:#F392BF;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#AD175D;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 对话骨架 */
+.ld-skchat{display:flex;flex-direction:column;gap:10px;width:260px}
+.ld-skchat b{height:30px;border-radius:14px 14px 14px 4px;background:linear-gradient(90deg,#EEF0F4 25%,#F8F9FB 37%,#EEF0F4 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+.ld-skchat b.me{align-self:flex-end;border-radius:14px 14px 4px 14px;background:linear-gradient(90deg,#FBE0ED 25%,#FDF0F6 37%,#FBE0ED 63%);background-size:300% 100%}
+@keyframes ld-shim{from{background-position:150% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){.ld-skchat,.ld-skchat *,.ld-skchat *::before,.ld-skchat *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-skchat" role="status" aria-busy="true" aria-label="加载中"><b style="width:75%"></b><b class="me" style="width:55%"></b><b style="width:85%;height:46px"></b><b class="me" style="width:40%"></b></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

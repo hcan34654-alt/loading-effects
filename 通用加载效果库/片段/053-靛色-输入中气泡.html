@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>输入中气泡 · 靛色</title>
+<!-- 对话气泡里三个点依次跳动。用于对方正在输入、AI 回复前的等待。　节奏：1.2 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#5155D7;--ld-main-d:#4045CD;--ld-accent:#8285D9;--ld-accent-l:#BABCF0;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#2A2EAD;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 输入中气泡 */
+.ld-think{display:inline-flex;align-items:center;gap:12px;padding:13px 18px;border-radius:20px 20px 20px 6px;background:#fff;box-shadow:0 8px 24px rgba(20,24,31,.08);font-size:13px;color:var(--ld-ink2)}
+.ld-think .dots{display:inline-flex;gap:5px}
+.ld-think .dots i{width:7px;height:7px;border-radius:50%;background:var(--ld-main);animation:ld-dot 1.2s ease-in-out infinite}
+.ld-think .dots i:nth-child(2){animation-delay:.15s}
+.ld-think .dots i:nth-child(3){animation-delay:.3s;background:var(--ld-accent)}
+@keyframes ld-dot{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-6px);opacity:1}}
+@media (prefers-reduced-motion: reduce){.ld-think,.ld-think *,.ld-think *::before,.ld-think *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-think" role="status" aria-label="正在输入">
+  <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  对方正在输入
+</div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

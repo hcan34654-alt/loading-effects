@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>环形图加载 · 紫色</title>
+<!-- 三段占比依次画出。用于占比、分布类图表。　节奏：3.4 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#8C49CF;--ld-main-d:#803AC6;--ld-accent:#A477D2;--ld-accent-l:#CAAAEA;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#662CA0;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 环形图加载 */
+.ld-donut{position:relative;display:grid;place-items:center;width:124px;height:124px;font-size:12px;color:var(--ld-mute)}
+.ld-donut svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.ld-donut circle{fill:none;stroke-width:5}
+.ld-donut .tr{stroke:var(--ld-track)}
+.ld-donut .s{stroke-dasharray:0 100;animation:ld-seg 3.4s ease infinite both}
+.ld-donut .s1{stroke:var(--ld-main);--l:45}
+.ld-donut .s2{stroke:var(--ld-accent);--l:30;stroke-dashoffset:-45;animation-delay:.35s}
+.ld-donut .s3{stroke:#5B486F;--l:25;stroke-dashoffset:-75;animation-delay:.7s}
+@keyframes ld-seg{0%{stroke-dasharray:0 100;opacity:1}28%,84%{stroke-dasharray:var(--l) 100;opacity:1}100%{stroke-dasharray:var(--l) 100;opacity:0}}
+@media (prefers-reduced-motion: reduce){.ld-donut,.ld-donut *,.ld-donut *::before,.ld-donut *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-donut" role="img" aria-label="图表加载中">
+  <svg viewBox="0 0 42 42"><circle class="tr" cx="21" cy="21" r="15.915"/><circle class="s s1" cx="21" cy="21" r="15.915"/><circle class="s s2" cx="21" cy="21" r="15.915"/><circle class="s s3" cx="21" cy="21" r="15.915"/></svg>
+  题型分布
+</div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

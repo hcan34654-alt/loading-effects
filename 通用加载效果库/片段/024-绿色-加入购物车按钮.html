@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>加入购物车按钮 · 绿色</title>
+<!-- 点击后按钮内转圈，成功后变绿显示已加入，再复位。　节奏：约 3.8 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#299E63;--ld-main-d:#298C5A;--ld-accent:#3AAF75;--ld-accent-l:#4CD38F;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1F7148;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 加入购物车按钮 */
+.ld-cart{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:170px;height:46px;border:0;border-radius:10px;background:var(--ld-main-d);color:#fff;font-family:inherit;font-size:15px;font-weight:600;transition:background .3s}
+.ld-cart .ic{position:relative;width:18px;height:18px}
+.ld-cart .ic>*{position:absolute;inset:0;transition:opacity .2s}
+.ld-cart .ct{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ld-cart .sp{flex:none;display:inline-block;box-sizing:border-box;width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;animation:ld-rot .8s linear infinite}
+.ld-cart .ck{fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.ld-cart[data-s=idle] .sp,.ld-cart[data-s=idle] .ck,.ld-cart[data-s=load] .ct,.ld-cart[data-s=load] .ck,.ld-cart[data-s=done] .ct,.ld-cart[data-s=done] .sp{opacity:0}
+.ld-cart[data-s=done]{background:var(--ld-ok)}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-cart,.ld-cart *,.ld-cart *::before,.ld-cart *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<button class="ld-cart" type="button" data-s="idle"><span class="ic"><svg class="ct" viewBox="0 0 20 20"><path d="M2 3h2.5l2 9.5h8.5l2-6.5H5.6"/><circle cx="8" cy="16" r="1"/><circle cx="14" cy="16" r="1"/></svg><i class="sp"></i><svg class="ck" viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7"/></svg></span><span class="t">加入购物车</span></button>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const b=root.querySelector('.ld-cart'),t=b.querySelector('.t');
+  while(true){
+    b.dataset.s='idle';t.textContent='加入购物车';await W(1300);
+    b.dataset.s='load';t.textContent='加入中';await W(1000);
+    b.dataset.s='done';t.textContent='已加入';await W(1500);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

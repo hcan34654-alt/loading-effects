@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>二维码刷新 · 靛色</title>
+<!-- 二维码过期后变淡并盖上刷新按钮，点击后转圈，新码回来恢复清晰。　节奏：约 4.3 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#5155D7;--ld-main-d:#4045CD;--ld-accent:#8285D9;--ld-accent-l:#BABCF0;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#2A2EAD;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 二维码刷新 */
+.ld-qr{position:relative;width:132px;height:132px;padding:10px;border-radius:12px;background:#fff;box-shadow:0 8px 24px rgba(20,24,31,.07)}
+.ld-qr .q{display:block;width:132px;height:132px;fill:var(--ld-ink);transition:opacity .3s,filter .3s}
+.ld-qr .ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--ld-ink);opacity:0;transition:opacity .3s}
+.ld-qr .rf{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--ld-main)}
+.ld-qr .rf svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.ld-qr .sp{flex:none;display:inline-block;box-sizing:border-box;width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;animation:ld-rot .8s linear infinite}
+.ld-qr:not([data-s=ok]) .q{opacity:.12;filter:blur(1.5px)}
+.ld-qr:not([data-s=ok]) .ov{opacity:1}
+.ld-qr[data-s=load] .rf svg,.ld-qr[data-s=expired] .sp,.ld-qr[data-s=ok] .sp{display:none}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-qr,.ld-qr *,.ld-qr *::before,.ld-qr *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-qr" data-s="ok"><svg class="q" viewBox="0 0 21 21" shape-rendering="crispEdges" role="img" aria-label="二维码"><path d="M0 0h1v1h-1zM0 1h1v1h-1zM0 2h1v1h-1zM0 3h1v1h-1zM0 4h1v1h-1zM0 5h1v1h-1zM0 6h1v1h-1zM0 8h1v1h-1zM0 9h1v1h-1zM0 10h1v1h-1zM0 12h1v1h-1zM0 14h1v1h-1zM0 15h1v1h-1zM0 16h1v1h-1zM0 17h1v1h-1zM0 18h1v1h-1zM0 19h1v1h-1zM0 20h1v1h-1zM1 0h1v1h-1zM1 6h1v1h-1zM1 8h1v1h-1zM1 12h1v1h-1zM1 14h1v1h-1zM1 20h1v1h-1zM2 0h1v1h-1zM2 2h1v1h-1zM2 3h1v1h-1zM2 4h1v1h-1zM2 6h1v1h-1zM2 10h1v1h-1zM2 11h1v1h-1zM2 12h1v1h-1zM2 14h1v1h-1zM2 16h1v1h-1zM2 17h1v1h-1zM2 18h1v1h-1zM2 20h1v1h-1zM3 0h1v1h-1zM3 2h1v1h-1zM3 3h1v1h-1zM3 4h1v1h-1zM3 6h1v1h-1zM3 10h1v1h-1zM3 11h1v1h-1zM3 12h1v1h-1zM3 14h1v1h-1zM3 16h1v1h-1zM3 17h1v1h-1zM3 18h1v1h-1zM3 20h1v1h-1zM4 0h1v1h-1zM4 2h1v1h-1zM4 3h1v1h-1zM4 4h1v1h-1zM4 6h1v1h-1zM4 8h1v1h-1zM4 9h1v1h-1zM4 10h1v1h-1zM4 11h1v1h-1zM4 12h1v1h-1zM4 14h1v1h-1zM4 16h1v1h-1zM4 17h1v1h-1zM4 18h1v1h-1zM4 20h1v1h-1zM5 0h1v1h-1zM5 6h1v1h-1zM5 11h1v1h-1zM5 12h1v1h-1zM5 14h1v1h-1zM5 20h1v1h-1zM6 0h1v1h-1zM6 1h1v1h-1zM6 2h1v1h-1zM6 3h1v1h-1zM6 4h1v1h-1zM6 5h1v1h-1zM6 6h1v1h-1zM6 10h1v1h-1zM6 12h1v1h-1zM6 14h1v1h-1zM6 15h1v1h-1zM6 16h1v1h-1zM6 17h1v1h-1zM6 18h1v1h-1zM6 19h1v1h-1zM6 20h1v1h-1zM7 9h1v1h-1zM7 10h1v1h-1zM7 12h1v1h-1zM8 0h1v1h-1zM8 1h1v1h-1zM8 2h1v1h-1zM8 3h1v1h-1zM8 5h1v1h-1zM8 7h1v1h-1zM8 12h1v1h-1zM8 17h1v1h-1zM8 20h1v1h-1zM9 0h1v1h-1zM9 1h1v1h-1zM9 2h1v1h-1zM9 4h1v1h-1zM9 5h1v1h-1zM9 6h1v1h-1zM9 8h1v1h-1zM9 9h1v1h-1zM9 12h1v1h-1zM9 13h1v1h-1zM9 16h1v1h-1zM9 18h1v1h-1zM9 19h1v1h-1zM9 20h1v1h-1zM10 2h1v1h-1zM10 7h1v1h-1zM10 12h1v1h-1zM10 13h1v1h-1zM10 18h1v1h-1zM10 20h1v1h-1zM11 0h1v1h-1zM11 1h1v1h-1zM11 4h1v1h-1zM11 5h1v1h-1zM11 6h1v1h-1zM11 7h1v1h-1zM11 8h1v1h-1zM11 13h1v1h-1zM11 17h1v1h-1zM11 19h1v1h-1zM12 1h1v1h-1zM12 2h1v1h-1zM12 3h1v1h-1zM12 4h1v1h-1zM12 6h1v1h-1zM12 8h1v1h-1zM12 10h1v1h-1zM12 11h1v1h-1zM12 13h1v1h-1zM12 14h1v1h-1zM12 19h1v1h-1zM12 20h1v1h-1zM13 10h1v1h-1zM13 12h1v1h-1zM13 14h1v1h-1zM13 15h1v1h-1zM13 16h1v1h-1zM13 18h1v1h-1zM13 20h1v1h-1zM14 0h1v1h-1zM14 1h1v1h-1zM14 2h1v1h-1zM14 3h1v1h-1zM14 4h1v1h-1zM14 5h1v1h-1zM14 6h1v1h-1zM14 8h1v1h-1zM14 9h1v1h-1zM14 10h1v1h-1zM14 12h1v1h-1zM14 13h1v1h-1zM14 14h1v1h-1zM14 16h1v1h-1zM14 18h1v1h-1zM14 20h1v1h-1zM15 0h1v1h-1zM15 6h1v1h-1zM15 9h1v1h-1zM15 12h1v1h-1zM15 13h1v1h-1zM15 15h1v1h-1zM15 16h1v1h-1zM15 18h1v1h-1zM16 0h1v1h-1zM16 2h1v1h-1zM16 3h1v1h-1zM16 4h1v1h-1zM16 6h1v1h-1zM16 8h1v1h-1zM16 12h1v1h-1zM16 15h1v1h-1zM16 16h1v1h-1zM16 17h1v1h-1zM16 20h1v1h-1zM17 0h1v1h-1zM17 2h1v1h-1zM17 3h1v1h-1zM17 4h1v1h-1zM17 6h1v1h-1zM17 9h1v1h-1zM17 10h1v1h-1zM17 11h1v1h-1zM17 12h1v1h-1zM17 15h1v1h-1zM17 16h1v1h-1zM17 17h1v1h-1zM17 19h1v1h-1zM17 20h1v1h-1zM18 0h1v1h-1zM18 2h1v1h-1zM18 3h1v1h-1zM18 4h1v1h-1zM18 6h1v1h-1zM18 9h1v1h-1zM18 10h1v1h-1zM18 11h1v1h-1zM18 13h1v1h-1zM18 14h1v1h-1zM18 15h1v1h-1zM18 18h1v1h-1zM19 0h1v1h-1zM19 6h1v1h-1zM19 9h1v1h-1zM19 10h1v1h-1zM19 11h1v1h-1zM19 14h1v1h-1zM19 15h1v1h-1zM19 17h1v1h-1zM20 0h1v1h-1zM20 1h1v1h-1zM20 2h1v1h-1zM20 3h1v1h-1zM20 4h1v1h-1zM20 5h1v1h-1zM20 6h1v1h-1zM20 9h1v1h-1zM20 10h1v1h-1zM20 12h1v1h-1zM20 13h1v1h-1zM20 19h1v1h-1zM20 20h1v1h-1z"/></svg><div class="ov" role="status"><span class="rf"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg><i class="sp"></i></span><span class="t">二维码已过期</span></div></div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const c=root.querySelector('.ld-qr'),t=c.querySelector('.t');
+  while(true){
+    c.dataset.s='ok';await W(2000);
+    c.dataset.s='expired';t.textContent='二维码已过期';await W(1300);
+    c.dataset.s='load';t.textContent='刷新中';await W(1000);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

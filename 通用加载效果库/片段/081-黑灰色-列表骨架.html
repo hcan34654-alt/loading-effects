@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>列表骨架 · 黑灰色</title>
+<!-- 头像加两行字的三行骨架。用于消息、评论、联系人列表。　节奏：1.4 秒 shimmer -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2E2E2E;--ld-main-d:#2B2B2B;--ld-accent:#8E8E8E;--ld-accent-l:#989898;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#262626;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 列表骨架 */
+.ld-sklist{display:flex;flex-direction:column;gap:14px;width:270px;padding:16px;border-radius:16px;background:#fff}
+.ld-sklist .r{display:flex;gap:12px;align-items:center}
+.ld-sklist .a{flex:none;width:38px;height:38px;border-radius:50%;background:linear-gradient(90deg,#EEF0F4 25%,#F8F9FB 37%,#EEF0F4 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+.ld-sklist .t{flex:1;display:flex;flex-direction:column;gap:7px}
+.ld-sklist b{height:9px;border-radius:5px;background:linear-gradient(90deg,#EEF0F4 25%,#F8F9FB 37%,#EEF0F4 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+@keyframes ld-shim{from{background-position:150% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){.ld-sklist,.ld-sklist *,.ld-sklist *::before,.ld-sklist *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-sklist" role="status" aria-busy="true" aria-label="加载中"><div class="r"><i class="a"></i><div class="t"><b style="width:55%"></b><b style="width:85%"></b></div></div><div class="r"><i class="a"></i><div class="t"><b style="width:40%"></b><b style="width:70%"></b></div></div><div class="r"><i class="a"></i><div class="t"><b style="width:62%"></b><b style="width:78%"></b></div></div></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

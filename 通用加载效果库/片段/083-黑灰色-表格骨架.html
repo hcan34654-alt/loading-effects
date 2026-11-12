@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>表格骨架 · 黑灰色</title>
+<!-- 表头加深、每格宽度错落。用于后台数据表。　节奏：1.4 秒 shimmer -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2E2E2E;--ld-main-d:#2B2B2B;--ld-accent:#8E8E8E;--ld-accent-l:#989898;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#262626;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 表格骨架 */
+.ld-sktable{width:280px;border-radius:12px;background:#fff;overflow:hidden}
+.ld-sktable .r{display:grid;grid-template-columns:1.2fr 1fr 1fr .8fr;gap:12px;padding:11px 14px;border-bottom:1px solid #F1F2F5}
+.ld-sktable .r:first-child{background:#F7F8FA}
+.ld-sktable .r:first-child b{background:#E1E4EA;animation:none}
+.ld-sktable b{height:8px;border-radius:4px;background:linear-gradient(90deg,#EEF0F4 25%,#F8F9FB 37%,#EEF0F4 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+@keyframes ld-shim{from{background-position:150% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){.ld-sktable,.ld-sktable *,.ld-sktable *::before,.ld-sktable *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-sktable" role="status" aria-busy="true" aria-label="加载中"><div class="r"><b style="width:70%"></b><b style="width:60%"></b><b style="width:60%"></b><b style="width:80%"></b></div><div class="r"><b style="width:90%"></b><b style="width:50%"></b><b style="width:70%"></b><b style="width:60%"></b></div><div class="r"><b style="width:60%"></b><b style="width:80%"></b><b style="width:40%"></b><b style="width:70%"></b></div><div class="r"><b style="width:80%"></b><b style="width:60%"></b><b style="width:90%"></b><b style="width:50%"></b></div><div class="r"><b style="width:50%"></b><b style="width:70%"></b><b style="width:60%"></b><b style="width:80%"></b></div></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

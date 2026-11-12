@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>撤销倒计时条 · 黄色</title>
+<!-- 操作先生效，底部提示条留几秒撤销时间，进度线走完才真正提交。　节奏：4.8 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E3A71C;--ld-main-d:#C9961F;--ld-accent:#DCB24F;--ld-accent-l:#F1CE7E;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A37916;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 撤销倒计时条 */
+.ld-undo{position:relative;display:flex;align-items:center;justify-content:space-between;width:250px;height:46px;padding:0 16px;box-sizing:border-box;border-radius:10px;background:var(--ld-ink);color:#fff;font-size:13px;overflow:hidden;animation:ld-uin 4.8s var(--ld-ease) infinite}
+.ld-undo b{color:var(--ld-main);font-weight:600}
+.ld-undo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--ld-main);transform-origin:left;animation:ld-ubar 4.8s linear infinite}
+@keyframes ld-uin{0%{opacity:0;transform:translateY(14px)}6%,88%{opacity:1;transform:none}96%,100%{opacity:0;transform:translateY(14px)}}
+@keyframes ld-ubar{0%,6%{transform:scaleX(1)}88%,100%{transform:scaleX(0)}}
+@media (prefers-reduced-motion: reduce){.ld-undo,.ld-undo *,.ld-undo *::before,.ld-undo *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-undo" role="status">已删除 1 个文件<b>撤销</b></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

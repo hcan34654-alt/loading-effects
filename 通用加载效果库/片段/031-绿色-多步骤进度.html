@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>多步骤进度 · 绿色</title>
+<!-- 把长等待拆成三步，当前步高亮，完成后打勾。　节奏：约 5 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#299E63;--ld-main-d:#298C5A;--ld-accent:#3AAF75;--ld-accent-l:#4CD38F;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1F7148;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 多步骤进度 */
+.ld-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;width:220px}
+.ld-steps li{position:relative;display:flex;gap:12px;align-items:flex-start}
+.ld-steps li:not(:last-child)::before,.ld-steps li:not(:last-child)::after{content:"";position:absolute;left:11px;top:28px;width:2px;height:calc(100% - 16px);border-radius:1px;background:var(--ld-line)}
+.ld-steps li:not(:last-child)::after{background:var(--ld-main);transform:scaleY(0);transform-origin:top;transition:transform .45s var(--ld-ease)}
+.ld-steps li[data-s=done]::after{transform:scaleY(1)}
+.ld-steps i{position:relative;flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;border:2px solid var(--ld-line);background:#fff;transition:background .3s,border-color .3s}
+.ld-steps i::after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:var(--ld-main);transform:scale(0);transition:transform .3s var(--ld-ease)}
+.ld-steps svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.ld-steps path{stroke-dasharray:16;stroke-dashoffset:16;transition:stroke-dashoffset .4s .1s var(--ld-ease)}
+.ld-steps li[data-s=run] i{border-color:var(--ld-main);animation:ld-pulse 1.3s ease-out infinite}
+.ld-steps li[data-s=run] i::after{transform:scale(1)}
+.ld-steps li[data-s=done] i{border-color:var(--ld-main);background:var(--ld-main)}
+.ld-steps li[data-s=done] path{stroke-dashoffset:0}
+.ld-steps b{display:block;font-size:14px;font-weight:600;color:var(--ld-mute);transition:color .3s}
+.ld-steps small{font-size:12px;color:var(--ld-mute)}
+.ld-steps li[data-s=run] b,.ld-steps li[data-s=done] b{color:var(--ld-ink)}
+@keyframes ld-pulse{0%{box-shadow:0 0 0 0 rgba(41,158,99,.35)}100%{box-shadow:0 0 0 10px rgba(41,158,99,0)}}
+@media (prefers-reduced-motion: reduce){.ld-steps,.ld-steps *,.ld-steps *::before,.ld-steps *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<ol class="ld-steps" aria-label="处理进度">
+  <li data-s="wait"><i><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7"/></svg></i><div><b>验证账号</b><small>登录状态与权限</small></div></li>
+  <li data-s="wait"><i><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7"/></svg></i><div><b>同步数据</b><small>拉取最新内容</small></div></li>
+  <li data-s="wait"><i><svg viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7"/></svg></i><div><b>准备完成</b><small>即将进入</small></div></li>
+</ol>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const L=[...root.querySelectorAll('.ld-steps li')];
+  while(true){
+    L.forEach(l=>l.dataset.s='wait');await W(600);
+    for(const l of L){l.dataset.s='run';await W(1000+Math.random()*500);l.dataset.s='done';await W(260);}
+    await W(1600);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

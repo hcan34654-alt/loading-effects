@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>上传进度环 · 蓝色</title>
+<!-- 环形进度带百分比，完成后显示对勾。　节奏：约 5 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2F79DB;--ld-main-d:#296EC8;--ld-accent:#6093D7;--ld-accent-l:#90B9ED;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1E57A2;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 上传进度环 */
+.ld-upw{display:flex;flex-direction:column;align-items:center;gap:12px}
+.ld-up{position:relative;width:124px;height:124px}
+.ld-up svg{position:absolute;inset:0;width:100%;height:100%}
+.ld-up .ring{transform:rotate(-90deg)}
+.ld-up circle{fill:none;stroke-width:8}
+.ld-up .tr{stroke:var(--ld-track)}
+.ld-up .br{stroke:var(--ld-main);stroke-linecap:round;stroke-dasharray:326.7;stroke-dashoffset:326.7;transition:stroke-dashoffset .35s var(--ld-ease),stroke .4s}
+.ld-up .ct{position:absolute;inset:0;display:flex;align-items:baseline;justify-content:center;padding-top:40px;color:var(--ld-ink);transition:opacity .3s,transform .3s}
+.ld-up .ct b{font:700 34px/1 var(--ld-num);font-variant-numeric:tabular-nums}
+.ld-up .ct span{font-size:13px;margin-left:2px;color:var(--ld-mute)}
+.ld-up .ok path{fill:none;stroke:#4379BF;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;transition:stroke-dashoffset .5s .15s var(--ld-ease)}
+.ld-up.done .br{stroke:var(--ld-accent)}
+.ld-up.done{filter:drop-shadow(0 0 10px rgba(96,147,215,.45))}
+.ld-up.done .ct{opacity:0;transform:scale(.8)}
+.ld-up.done .ok path{stroke-dashoffset:0}
+.ld-upw p{margin:0;font-size:12.5px;color:var(--ld-mute)}
+@media (prefers-reduced-motion: reduce){.ld-up,.ld-up *,.ld-up *::before,.ld-up *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-upw">
+  <div class="ld-up" role="progressbar" aria-label="上传进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <svg class="ring" viewBox="0 0 124 124"><circle class="tr" cx="62" cy="62" r="52"/><circle class="br" cx="62" cy="62" r="52"/></svg>
+    <div class="ct"><b class="n">0</b><span>%</span></div>
+    <svg class="ok" viewBox="0 0 124 124"><path d="M44 63l13 13 25-27"/></svg>
+  </div>
+  <p class="f">照片_0312.jpg · 2.4 MB</p>
+</div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const el=root.querySelector('.ld-up'),br=el.querySelector('.br'),n=el.querySelector('.n'),f=root.querySelector('.ld-upw .f');
+  const C=326.7,set=v=>{br.style.strokeDashoffset=C*(1-v/100);n.textContent=Math.round(v);el.setAttribute('aria-valuenow',Math.round(v));};
+  while(true){
+    el.classList.remove('done');f.textContent='照片_0312.jpg · 2.4 MB';set(0);await W(700);
+    let p=0;
+    while(p<100){p=Math.min(100,p+Math.random()*13+3);set(p);await W(150+Math.random()*240);}
+    el.classList.add('done');f.textContent='上传完成';await W(2000);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

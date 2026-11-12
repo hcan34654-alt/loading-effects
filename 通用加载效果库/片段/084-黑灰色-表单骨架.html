@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>表单骨架 · 黑灰色</title>
+<!-- 标签、输入框、提交按钮的骨架。　节奏：1.4 秒 shimmer -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2E2E2E;--ld-main-d:#2B2B2B;--ld-accent:#8E8E8E;--ld-accent-l:#989898;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#262626;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 表单骨架 */
+.ld-skform{display:flex;flex-direction:column;gap:8px;width:240px;padding:18px;border-radius:16px;background:#fff}
+.ld-skform b{height:8px;width:30%;border-radius:4px;background:linear-gradient(90deg,#EEF0F4 25%,#F8F9FB 37%,#EEF0F4 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+.ld-skform i{height:32px;margin-bottom:6px;border-radius:8px;border:1.5px solid #EEF0F4;background:#FAFBFC}
+.ld-skform u{height:36px;margin-top:4px;border-radius:999px;background:linear-gradient(90deg,#EEEEEE 25%,#F6F6F6 37%,#EEEEEE 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+@keyframes ld-shim{from{background-position:150% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){.ld-skform,.ld-skform *,.ld-skform *::before,.ld-skform *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-skform" role="status" aria-busy="true" aria-label="表单加载中"><b></b><i></i><b style="width:24%"></b><i></i><b style="width:36%"></b><i></i><u></u></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

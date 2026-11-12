@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>头像上传 · 粉色</title>
+<!-- 头像外圈走进度、中间显示百分比，传完遮罩撤掉、右下角出对勾。　节奏：约 4.5 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E52A81;--ld-main-d:#D52175;--ld-accent:#DF5E9A;--ld-accent-l:#F392BF;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#AD175D;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 头像上传 */
+.ld-avatar{position:relative;width:92px;height:92px}
+.ld-avatar .av{position:absolute;inset:6px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#F77FB7,#E36AA2);color:#fff;font-size:26px;font-weight:800;overflow:hidden}
+.ld-avatar .av::after{content:attr(data-p);position:absolute;inset:0;display:grid;place-items:center;background:rgba(20,24,31,.5);font:700 15px var(--ld-num);transition:opacity .3s}
+.ld-avatar svg.ring{position:absolute;inset:0;width:92px;height:92px;transform:rotate(-90deg)}
+.ld-avatar .pr{fill:none;stroke:var(--ld-main);stroke-width:3.5;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset .25s,stroke .3s}
+.ld-avatar .bd{position:absolute;right:2px;bottom:2px;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;border:2px solid #fff;background:var(--ld-ok);transform:scale(0);transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+.ld-avatar .ck{fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.ld-avatar .ck{width:13px;height:13px}
+.ld-avatar.done .av::after{opacity:0}
+.ld-avatar.done .pr{stroke:var(--ld-ok)}
+.ld-avatar.done .bd{transform:scale(1)}
+@media (prefers-reduced-motion: reduce){.ld-avatar,.ld-avatar *,.ld-avatar *::before,.ld-avatar *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-avatar" role="progressbar" aria-label="头像上传中"><svg class="ring" viewBox="0 0 92 92"><circle class="pr" pathLength="100" cx="46" cy="46" r="43.5"/></svg><span class="av" data-p="0%">A</span><span class="bd"><svg class="ck" viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7"/></svg></span></div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const c=root.querySelector('.ld-avatar'),av=c.querySelector('.av'),pr=c.querySelector('.pr');
+  while(true){
+    c.classList.remove('done');let p=0;
+    while(true){
+      av.dataset.p=Math.round(p)+'%';pr.style.strokeDashoffset=100-p;
+      if(p>=100)break;await W(200);p=Math.min(100,p+6+Math.random()*10);
+    }
+    await W(300);c.classList.add('done');await W(1900);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

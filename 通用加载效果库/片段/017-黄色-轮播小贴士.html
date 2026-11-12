@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>轮播小贴士 · 黄色</title>
+<!-- 等待时轮播显示使用提示。用于超过几秒的长等待。　节奏：每条 2.5 秒 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E3A71C;--ld-main-d:#C9961F;--ld-accent:#DCB24F;--ld-accent-l:#F1CE7E;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A37916;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 轮播小贴士 */
+.ld-tips{display:flex;align-items:center;gap:10px;width:280px;padding:12px 14px;border-radius:14px;background:#fff;box-shadow:0 8px 24px rgba(20,24,31,.07)}
+.ld-tips b{flex:none;padding:3px 8px;border-radius:6px;background:#FFF6E0;color:#9A7112;font-size:11.5px}
+.ld-tips .vp{height:20px;overflow:hidden;flex:1}
+.ld-tips ul{margin:0;padding:0;list-style:none;animation:ld-tips 10s cubic-bezier(.7,0,.3,1) infinite}
+.ld-tips li{height:20px;line-height:20px;font-size:13px;color:var(--ld-ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@keyframes ld-tips{0%,21%{transform:translateY(0)}25%,46%{transform:translateY(-20px)}50%,71%{transform:translateY(-40px)}75%,96%{transform:translateY(-60px)}100%{transform:translateY(-80px)}}
+@media (prefers-reduced-motion: reduce){.ld-tips,.ld-tips *,.ld-tips *::before,.ld-tips *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-tips" role="status" aria-live="off">
+  <b>小贴士</b>
+  <div class="vp"><ul>
+    <li>按 Ctrl + K 可以快速搜索</li><li>长按列表项可以批量选择</li>
+    <li>在设置里可以开启深色模式</li><li>拖动卡片可以调整顺序</li><li>按 Ctrl + K 可以快速搜索</li>
+  </ul></div>
+</div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

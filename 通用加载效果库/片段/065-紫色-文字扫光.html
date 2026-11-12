@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>文字扫光 · 紫色</title>
+<!-- 状态文字上有一道高光扫过。用于「正在生成…」这类文字状态。　节奏：2 秒一次 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#8C49CF;--ld-main-d:#803AC6;--ld-accent:#A477D2;--ld-accent-l:#CAAAEA;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#662CA0;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 文字扫光 */
+.ld-tshim{margin:0;font-size:19px;font-weight:700;color:transparent;background:linear-gradient(100deg,#CBA5F1 0 40%,var(--ld-main) 50%,#CBA5F1 60% 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;animation:ld-tsh 2s linear infinite}
+@keyframes ld-tsh{from{background-position:100% 0}to{background-position:0 0}}
+@media (prefers-reduced-motion: reduce){.ld-tshim,.ld-tshim *,.ld-tshim *::before,.ld-tshim *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<p class="ld-tshim" role="status">正在为你生成内容</p>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

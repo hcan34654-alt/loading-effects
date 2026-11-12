@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>大字百分比 · 黄色</title>
+<!-- 大号百分比数字从 0 增加到 100。用于整页级的长任务。　节奏：约 3.5 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E3A71C;--ld-main-d:#C9961F;--ld-accent:#DCB24F;--ld-accent-l:#F1CE7E;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A37916;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 大字百分比 */
+.ld-pct{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ld-pct b{position:relative;font:800 64px/1 var(--ld-num);color:var(--ld-track);font-variant-numeric:tabular-nums}
+.ld-pct b::after{content:attr(data-v);position:absolute;inset:0;color:transparent;background:linear-gradient(0deg,var(--ld-main),var(--ld-accent));-webkit-background-clip:text;background-clip:text;clip-path:inset(calc(100% - var(--p,0%)) 0 0 0)}
+.ld-pct small{font-size:12.5px;color:var(--ld-mute)}
+@media (prefers-reduced-motion: reduce){.ld-pct,.ld-pct *,.ld-pct *::before,.ld-pct *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-pct" role="progressbar" aria-label="加载进度" aria-valuemin="0" aria-valuemax="100"><b data-v="0%">0%</b><small>正在生成报告</small></div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const b=root.querySelector('.ld-pct b'),box=root.querySelector('.ld-pct');
+  while(true){
+    for(let v=0;v<=100;v+=Math.ceil(Math.random()*4)){
+      const x=Math.min(v,100);b.textContent=b.dataset.v=x+'%';b.style.setProperty('--p',x+'%');box.setAttribute('aria-valuenow',x);
+      await W(40+Math.random()*50);
+    }
+    b.textContent=b.dataset.v='100%';b.style.setProperty('--p','100%');await W(1300);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

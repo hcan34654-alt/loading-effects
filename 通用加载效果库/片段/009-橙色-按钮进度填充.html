@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>按钮进度填充 · 橙色</title>
+<!-- 按钮底色从左到右填充，文字显示百分比。用于能拿到进度的下载、导出按钮。　节奏：约 4 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E3651C;--ld-main-d:#C95D1F;--ld-accent:#DC834F;--ld-accent-l:#F1A87E;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A34A16;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 按钮进度填充 */
+.ld-btnfill{position:relative;width:200px;height:46px;border:0;border-radius:10px;background:#F1CEB9;color:#fff;font-family:inherit;font-size:15px;font-weight:600;overflow:hidden;cursor:pointer}
+.ld-btnfill i{position:absolute;inset:0;background:var(--ld-main-d);transform-origin:left;transform:scaleX(var(--p,1));transition:transform .25s linear}
+.ld-btnfill span{position:relative;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){.ld-btnfill,.ld-btnfill *,.ld-btnfill *::before,.ld-btnfill *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<button class="ld-btnfill" type="button"><i></i><span>下载文件</span></button>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const b=root.querySelector('.ld-btnfill'),t=b.querySelector('span');
+  while(true){
+    b.style.setProperty('--p',1);t.textContent='下载文件';await W(1300);
+    let p=0;b.style.setProperty('--p',0);
+    while(p<100){p=Math.min(100,p+4+Math.random()*10);b.style.setProperty('--p',p/100);t.textContent='下载中 '+Math.round(p)+'%';await W(220);}
+    t.textContent='打开文件';await W(1500);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

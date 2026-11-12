@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>提交按钮三态 · 蓝色</title>
+<!-- 点击后按钮内转圈，宽度不变；成功后显示对勾再复位。可以点击试用。　节奏：约 3 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2F79DB;--ld-main-d:#296EC8;--ld-accent:#6093D7;--ld-accent-l:#90B9ED;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1E57A2;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 提交按钮三态 */
+.ld-submit{display:inline-flex;align-items:center;justify-content:center;width:172px;height:48px;border:0;border-radius:999px;background:var(--ld-main-d);color:#fff;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 8px 20px rgba(41,110,200,.28);transition:background .35s var(--ld-ease),box-shadow .35s,transform .15s}
+.ld-submit:active{transform:scale(.97)}
+.ld-submit .ic{display:inline-grid;place-items:center;width:0;height:18px;overflow:hidden;transition:width .3s var(--ld-ease),margin .3s var(--ld-ease)}
+.ld-submit .ic svg{grid-area:1/1;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.ld-submit[data-state=loading] .ic,.ld-submit[data-state=done] .ic{width:18px;margin-right:8px}
+.ld-submit .sp{opacity:0;animation:ld-rot .8s linear infinite}
+.ld-submit .sp circle{stroke-dasharray:30 60}
+.ld-submit[data-state=loading]{cursor:progress;background:#2564B6;box-shadow:0 4px 12px rgba(41,110,200,.22)}
+.ld-submit[data-state=loading] .sp{opacity:1}
+.ld-submit .ok path{stroke-dasharray:16;stroke-dashoffset:16;transition:stroke-dashoffset .45s .12s var(--ld-ease)}
+.ld-submit[data-state=done]{background:var(--ld-ok);box-shadow:0 8px 20px rgba(30,87,162,.28)}
+.ld-submit[data-state=done] .ok path{stroke-dashoffset:0}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-submit,.ld-submit *,.ld-submit *::before,.ld-submit *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<button class="ld-submit" type="button" data-state="idle">
+  <span class="ic" aria-hidden="true">
+    <svg class="sp" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/></svg>
+    <svg class="ok" viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7"/></svg>
+  </span><span class="lb">提交</span>
+</button>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const b=root.querySelector('.ld-submit'),lb=b.querySelector('.lb');
+  let busy=false;
+  async function run(){
+    if(busy)return;busy=true;
+    b.dataset.state='loading';lb.textContent='提交中';b.setAttribute('aria-busy','true');
+    await W(1600);
+    b.dataset.state='done';lb.textContent='已提交';b.removeAttribute('aria-busy');
+    await W(1500);
+    b.dataset.state='idle';lb.textContent='提交';busy=false;
+  }
+  b.onclick=()=>run().catch(()=>{});
+  while(true){await W(1200);await run();}
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

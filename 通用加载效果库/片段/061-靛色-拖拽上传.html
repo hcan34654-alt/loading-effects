@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>拖拽上传 · 靛色</title>
+<!-- 文件拖入虚线框时边框高亮，松手后落入。　节奏：2.8 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#5155D7;--ld-main-d:#4045CD;--ld-accent:#8285D9;--ld-accent-l:#BABCF0;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#2A2EAD;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 拖拽上传 */
+.ld-drop{position:relative;width:200px;height:130px}
+.ld-drop .zone{position:absolute;inset:14px 0 0;display:grid;place-items:end center;padding-bottom:12px;border:2px dashed #C9CED7;border-radius:16px;background:#fff;font-size:12px;color:var(--ld-mute);animation:ld-zone 2.8s ease infinite}
+.ld-drop .file{position:absolute;left:84px;top:40px;width:32px;height:40px;border-radius:4px;background:#fff;border:2px solid var(--ld-main);box-shadow:0 8px 16px rgba(20,24,31,.15);animation:ld-file 2.8s cubic-bezier(.4,0,.2,1) infinite}
+.ld-drop .file::before{content:"";position:absolute;right:-2px;top:-2px;border-left:10px solid var(--ld-main);border-bottom:10px solid transparent;border-top:0}
+.ld-drop .file::after{content:"";position:absolute;left:6px;right:6px;top:16px;height:3px;border-radius:2px;background:var(--ld-main);box-shadow:0 7px 0 #B5B7F5}
+@keyframes ld-file{0%{transform:translate(110px,-60px) rotate(18deg);opacity:0}15%{opacity:1}45%{transform:translate(0,-8px) rotate(-6deg)}55%,85%{transform:none;opacity:1}100%{transform:none;opacity:0}}
+@keyframes ld-zone{0%,25%{border-color:#C9CED7;background:#fff}38%,60%{border-color:var(--ld-main);background:#F5F5FF}75%,100%{border-color:#C9CED7;background:#fff}}
+@media (prefers-reduced-motion: reduce){.ld-drop,.ld-drop *,.ld-drop *::before,.ld-drop *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-drop" role="status" aria-label="上传中"><div class="zone">拖到这里上传文件</div><span class="file" aria-hidden="true"></span></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

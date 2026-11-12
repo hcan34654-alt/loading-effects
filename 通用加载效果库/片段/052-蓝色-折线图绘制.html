@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>折线图绘制 · 蓝色</title>
+<!-- 网格先出现，折线从左画到右，末端落一个点。用于趋势图加载。　节奏：3.2 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2F79DB;--ld-main-d:#296EC8;--ld-accent:#6093D7;--ld-accent-l:#90B9ED;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1E57A2;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 折线图绘制 */
+.ld-line{width:220px;height:120px}
+.ld-line .ax{stroke:var(--ld-line);stroke-width:1}
+.ld-line .ar{fill:var(--ld-main);opacity:0;animation:ld-lna 3.2s ease infinite}
+.ld-line .ln{fill:none;stroke:var(--ld-main);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:100;animation:ld-lnd 3.2s ease-in-out infinite}
+.ld-line .pt{fill:#fff;stroke:var(--ld-main);stroke-width:2.5;transform-box:fill-box;transform-origin:center;animation:ld-lnp 3.2s var(--ld-ease) infinite}
+@keyframes ld-lnd{0%{stroke-dashoffset:100;opacity:1}45%,86%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes ld-lna{0%,35%{opacity:0}55%,86%{opacity:.12}100%{opacity:0}}
+@keyframes ld-lnp{0%,42%{transform:scale(0)}50%,86%{transform:scale(1);opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){.ld-line,.ld-line *,.ld-line *::before,.ld-line *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<svg class="ld-line" viewBox="0 0 220 120" role="img" aria-label="图表加载中">
+  <path class="ax" d="M10 30h200M10 60h200M10 90h200M10 110h200"/>
+  <path class="ar" d="M10 92 50 70 88 80 128 44 166 56 208 22V110H10z"/>
+  <path class="ln" pathLength="100" d="M10 92 50 70 88 80 128 44 166 56 208 22"/>
+  <circle class="pt" cx="208" cy="22" r="4.5"/>
+</svg>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

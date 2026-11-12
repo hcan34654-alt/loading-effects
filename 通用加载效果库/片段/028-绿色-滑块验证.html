@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>滑块验证 · 绿色</title>
+<!-- 滑块拖到右端后在滑块内转圈校验，通过后整条变绿。　节奏：约 4.8 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#299E63;--ld-main-d:#298C5A;--ld-accent:#3AAF75;--ld-accent-l:#4CD38F;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1F7148;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 滑块验证 */
+.ld-slide{position:relative;display:grid;place-items:center;width:250px;height:42px;border-radius:21px;background:#ECEEF2;overflow:hidden;font-size:13px;color:var(--ld-mute)}
+.ld-slide .fill{position:absolute;left:0;top:0;bottom:0;width:42px;border-radius:21px;background:#D4FAE7;transition:width .9s var(--ld-ease),background .3s}
+.ld-slide .knob{position:absolute;left:3px;top:3px;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:transform .9s var(--ld-ease)}
+.ld-slide .knob>*{grid-area:1/1;transition:opacity .2s}
+.ld-slide .ar{width:16px;height:16px;fill:none;stroke:var(--ld-main);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ld-slide .sp{flex:none;display:inline-block;box-sizing:border-box;width:16px;height:16px;border-radius:50%;border:2px solid var(--ld-track);border-top-color:var(--ld-main);animation:ld-rot .8s linear infinite}
+.ld-slide .ck{fill:none;stroke:var(--ld-ok);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ld-slide .ck{width:16px;height:16px}
+.ld-slide .sp,.ld-slide .ck{opacity:0}
+.ld-slide .t{position:relative;transition:color .3s}
+.ld-slide:not([data-s=idle]) .knob{transform:translateX(208px)}
+.ld-slide:not([data-s=idle]) .fill{width:100%}
+.ld-slide[data-s=verify] .ar,.ld-slide[data-s=ok] .ar{opacity:0}
+.ld-slide[data-s=verify] .sp,.ld-slide[data-s=ok] .ck{opacity:1}
+.ld-slide[data-s=ok] .fill{background:#CDEFDE}
+.ld-slide[data-s=ok] .t{color:#185537}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-slide,.ld-slide *,.ld-slide *::before,.ld-slide *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-slide" data-s="idle" role="status"><span class="fill"></span><span class="t">向右滑动完成验证</span><span class="knob"><svg class="ar" viewBox="0 0 16 16"><path d="M4 8h8M9 5l3 3-3 3"/></svg><i class="sp"></i><svg class="ck" viewBox="0 0 20 20"><path d="M5 10.5l3.2 3.2L15 7"/></svg></span></div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const c=root.querySelector('.ld-slide'),t=c.querySelector('.t');
+  while(true){
+    c.dataset.s='idle';t.textContent='向右滑动完成验证';await W(1300);
+    c.dataset.s='drag';await W(1000);
+    c.dataset.s='verify';t.textContent='验证中…';await W(1100);
+    c.dataset.s='ok';t.textContent='验证通过';await W(1700);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>验证码倒计时 · 蓝色</title>
+<!-- 点击后按钮先显示发送中，再变成读秒，期间不可重复点击。　节奏：每秒一跳 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2F79DB;--ld-main-d:#296EC8;--ld-accent:#6093D7;--ld-accent-l:#90B9ED;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1E57A2;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 验证码倒计时 */
+.ld-otp{display:flex;gap:8px;width:270px}
+.ld-otp .in{flex:1;display:flex;align-items:center;height:42px;padding:0 12px;border-radius:10px;border:1.5px solid var(--ld-line);background:#fff;color:#B4BAC5;font-size:14px}
+.ld-otp button{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:112px;height:42px;border-radius:10px;border:1.5px solid var(--ld-main);background:#fff;color:var(--ld-main);font-family:inherit;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;transition:.25s}
+.ld-otp .sp{flex:none;display:inline-block;box-sizing:border-box;width:14px;height:14px;border-radius:50%;border:2px solid var(--ld-track);border-top-color:var(--ld-main);animation:ld-rot .8s linear infinite}
+.ld-otp .sp{display:none}
+.ld-otp[data-s=sending] .sp{display:inline-block}
+.ld-otp[data-s=wait] button{border-color:var(--ld-line);background:#F7F8FA;color:var(--ld-mute)}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-otp,.ld-otp *,.ld-otp *::before,.ld-otp *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-otp" data-s="idle"><span class="in">请输入验证码</span><button type="button"><i class="sp"></i><span class="t">获取验证码</span></button></div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const c=root.querySelector('.ld-otp'),t=c.querySelector('.t');
+  while(true){
+    c.dataset.s='idle';t.textContent='获取验证码';await W(1200);
+    c.dataset.s='sending';t.textContent='发送中';await W(900);
+    c.dataset.s='wait';
+    for(let k=60;k>=56;k--){t.textContent=k+'s 后重发';await W(1000);}
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>跳转倒计时 · 黄色</title>
+<!-- 圆环随秒数减少，中间显示剩余秒数。用于支付成功后自动跳转、验证等待。　节奏：5 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E3A71C;--ld-main-d:#C9961F;--ld-accent:#DCB24F;--ld-accent-l:#F1CE7E;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A37916;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 跳转倒计时 */
+.ld-cdring{display:flex;flex-direction:column;align-items:center;gap:10px}
+.ld-cdring .w{position:relative;display:grid;place-items:center;width:84px;height:84px}
+.ld-cdring svg{position:absolute;inset:0;width:84px;height:84px;transform:rotate(-90deg)}
+.ld-cdring circle{fill:none;stroke-width:5}
+.ld-cdring .tr{stroke:var(--ld-track)}
+.ld-cdring .pr{stroke:var(--ld-main);stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:0}
+.ld-cdring b{font:700 30px/1 var(--ld-num);color:var(--ld-ink);font-variant-numeric:tabular-nums}
+.ld-cdring p{margin:0;font-size:12.5px;color:var(--ld-mute)}
+@media (prefers-reduced-motion: reduce){.ld-cdring,.ld-cdring *,.ld-cdring *::before,.ld-cdring *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-cdring" role="timer"><div class="w"><svg viewBox="0 0 84 84"><circle class="tr" cx="42" cy="42" r="38"/><circle class="pr" pathLength="100" cx="42" cy="42" r="38"/></svg><b>5</b></div><p>秒后自动跳转</p></div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const el=root.querySelector('.ld-cdring'),n=el.querySelector('b'),pr=el.querySelector('.pr');
+  while(true){
+    pr.style.transition='none';pr.style.strokeDashoffset=0;void pr.getBoundingClientRect();
+    pr.style.transition='stroke-dashoffset 5s linear';pr.style.strokeDashoffset=100;
+    for(let k=5;k>=1;k--){n.textContent=k;await W(1000);}
+    n.textContent=0;await W(500);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

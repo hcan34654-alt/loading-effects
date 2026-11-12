@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>视频缓冲 · 青色</title>
+<!-- 画面中央转圈，进度条上能看到已缓冲的部分往前走。　节奏：4 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#229AAA;--ld-main-d:#238997;--ld-accent:#34ACBC;--ld-accent-l:#49CCDD;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1A6F7A;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 视频缓冲 */
+.ld-vbuf{position:relative;width:250px;height:140px;border-radius:12px;background:linear-gradient(135deg,#2A2F38,#16191E);overflow:hidden}
+.ld-vbuf .sp{flex:none;display:inline-block;box-sizing:border-box;width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;animation:ld-rot .8s linear infinite}
+.ld-vbuf .sp{position:absolute;left:50%;top:44%;margin:-17px;animation:ld-rot .8s linear infinite,ld-vs 4s infinite}
+.ld-vbuf .ctl{position:absolute;left:12px;right:12px;bottom:10px;display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.85);font:11px var(--ld-num)}
+.ld-vbuf .pl{border-left:8px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.ld-vbuf .tr{position:relative;flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.2)}
+.ld-vbuf .tr i{position:absolute;left:0;top:0;bottom:0;border-radius:inherit}
+.ld-vbuf .b{background:rgba(255,255,255,.45);animation:ld-vb 4s linear infinite}
+.ld-vbuf .p{background:var(--ld-main);animation:ld-vp 4s linear infinite}
+@keyframes ld-vs{0%,50%{opacity:1}58%,100%{opacity:0}}
+@keyframes ld-vb{0%{width:30%}55%{width:62%}100%{width:80%}}
+@keyframes ld-vp{0%,55%{width:30%}100%{width:42%}}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-vbuf,.ld-vbuf *,.ld-vbuf *::before,.ld-vbuf *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-vbuf" role="status" aria-label="视频缓冲中"><i class="sp"></i><div class="ctl"><span class="pl"></span><span class="tr"><i class="b"></i><i class="p"></i></span><span>12:08 / 45:00</span></div></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

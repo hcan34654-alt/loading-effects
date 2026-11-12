@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>刷新回弹 · 青色</title>
+<!-- 刷新图标转一圈后停顿，带轻微回弹。用于手动刷新按钮。　节奏：1.6 秒一次 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#229AAA;--ld-main-d:#238997;--ld-accent:#34ACBC;--ld-accent-l:#49CCDD;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1A6F7A;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 刷新回弹 */
+.ld-refresh{display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:#F1FDFF}
+.ld-refresh svg{width:28px;height:28px;fill:none;stroke:var(--ld-main);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;animation:ld-rf 1.6s cubic-bezier(.5,-.45,.3,1.45) infinite}
+@keyframes ld-rf{0%{transform:rotate(0)}70%,100%{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-refresh,.ld-refresh *,.ld-refresh *::before,.ld-refresh *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<span class="ld-refresh" role="status" aria-label="刷新中"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></span>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

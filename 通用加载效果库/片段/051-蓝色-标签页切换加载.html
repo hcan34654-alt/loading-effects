@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>标签页切换加载 · 蓝色</title>
+<!-- 下划线先滑过去，内容区出骨架，数据到了再替换。　节奏：每个标签约 2.6 秒 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2F79DB;--ld-main-d:#296EC8;--ld-accent:#6093D7;--ld-accent-l:#90B9ED;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1E57A2;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 标签页切换加载 */
+.ld-tabs{width:250px;border-radius:12px;background:#fff;overflow:hidden}
+.ld-tabs .hd{position:relative;display:flex;border-bottom:1px solid #F1F2F5}
+.ld-tabs .hd span{flex:1;height:38px;line-height:38px;text-align:center;font-size:13px;color:var(--ld-mute);transition:color .3s}
+.ld-tabs .hd span.on{color:var(--ld-ink);font-weight:600}
+.ld-tabs .hd i{position:absolute;left:0;bottom:-1px;display:flex;justify-content:center;width:33.333%;height:2px;transform:translateX(calc(var(--i,0)*100%));transition:transform .35s var(--ld-ease)}
+.ld-tabs .hd i::after{content:"";width:28px;border-radius:2px;background:var(--ld-main)}
+.ld-tabs .bd{position:relative;height:86px}
+.ld-tabs .bd>div{position:absolute;inset:0;padding:14px;transition:opacity .25s}
+.ld-tabs .sk b{display:block;height:9px;margin-bottom:12px;border-radius:5px;background:linear-gradient(90deg,#EEF0F4 25%,#F8F9FB 37%,#EEF0F4 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+.ld-tabs .tx{opacity:0;font-size:12.5px;line-height:1.9;color:var(--ld-ink2)}
+.ld-tabs[data-s=done] .tx{opacity:1}
+.ld-tabs[data-s=done] .sk{opacity:0}
+@keyframes ld-shim{from{background-position:150% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){.ld-tabs,.ld-tabs *,.ld-tabs *::before,.ld-tabs *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-tabs" data-s="load">
+  <div class="hd"><span class="on">全部</span><span>进行中</span><span>已结束</span><i></i></div>
+  <div class="bd" aria-live="polite"><div class="sk" aria-hidden="true"><b style="width:80%"></b><b style="width:62%"></b><b style="width:72%"></b></div><div class="tx"></div></div>
+</div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const c=root.querySelector('.ld-tabs'),tabs=[...c.querySelectorAll('.hd span')],bar=c.querySelector('.hd i'),tx=c.querySelector('.tx');
+  const T=[['官网改版 · 进行中','数据迁移 · 已结束','年度盘点 · 未开始'],['官网改版 · 剩余 3 天'],['数据迁移 · 已验收','接口升级 · 已验收']];
+  let k=0;
+  while(true){
+    tabs.forEach((t,i)=>t.classList.toggle('on',i===k));bar.style.setProperty('--i',k);
+    c.dataset.s='load';await W(900);
+    tx.innerHTML=T[k].join('<br>');c.dataset.s='done';await W(1700);
+    k=(k+1)%3;
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

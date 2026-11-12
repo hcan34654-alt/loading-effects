@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>步骤胶囊 · 紫色</title>
+<!-- 四个圆点，当前那个拉长成胶囊，依次后移。用于引导页、轮播指示。　节奏：2 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#8C49CF;--ld-main-d:#803AC6;--ld-accent:#A477D2;--ld-accent-l:#CAAAEA;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#662CA0;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 步骤胶囊 */
+.ld-pill{display:flex;align-items:center;gap:7px}
+.ld-pill i{width:10px;height:10px;border-radius:5px;background:#DDE1E8;animation:ld-pill 2s ease-in-out infinite}
+.ld-pill i:nth-child(1){animation-delay:0.0s}
+.ld-pill i:nth-child(2){animation-delay:0.5s}
+.ld-pill i:nth-child(3){animation-delay:1.0s}
+.ld-pill i:nth-child(4){animation-delay:1.5s}
+@keyframes ld-pill{0%,20%{width:30px;background:var(--ld-main)}30%,100%{width:10px;background:#DDE1E8}}
+@media (prefers-reduced-motion: reduce){.ld-pill,.ld-pill *,.ld-pill *::before,.ld-pill *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-pill" role="status" aria-label="加载中"><i></i><i></i><i></i><i></i></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>搜索联想加载 · 靛色</title>
+<!-- 输入后框内转圈，下拉面板先出骨架行，结果回来后原位替换。　节奏：约 3.7 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#5155D7;--ld-main-d:#4045CD;--ld-accent:#8285D9;--ld-accent-l:#BABCF0;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#2A2EAD;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 搜索联想加载 */
+.ld-suggest{width:250px}
+.ld-suggest .in{display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:10px;border:1.5px solid var(--ld-ink);background:#fff;font-size:14px;color:var(--ld-ink)}
+.ld-suggest .in svg{width:16px;height:16px;fill:none;stroke:var(--ld-mute);stroke-width:2;stroke-linecap:round}
+.ld-suggest .in span{flex:1}
+.ld-suggest .sp{flex:none;display:inline-block;box-sizing:border-box;width:14px;height:14px;border-radius:50%;border:2px solid var(--ld-track);border-top-color:var(--ld-main);animation:ld-rot .8s linear infinite}
+.ld-suggest .sp{transition:opacity .2s}
+.ld-suggest .pop{position:relative;height:108px;margin-top:6px;border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(20,24,31,.1);overflow:hidden}
+.ld-suggest .pop>div{position:absolute;inset:0;display:flex;flex-direction:column;padding:6px;transition:opacity .3s}
+.ld-suggest .sk b{height:10px;margin:11px 8px;border-radius:5px;background:linear-gradient(90deg,#EEF0F4 25%,#F8F9FB 37%,#EEF0F4 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+.ld-suggest .rs{opacity:0}
+.ld-suggest .rs span{height:32px;line-height:32px;padding:0 8px;border-radius:6px;font-size:13px;color:var(--ld-ink2)}
+.ld-suggest .rs span:first-child{background:#F7F8FA}
+.ld-suggest .rs em{font-style:normal;color:var(--ld-main)}
+.ld-suggest[data-s=done] .rs{opacity:1}
+.ld-suggest[data-s=done] .sk,.ld-suggest[data-s=done] .sp{opacity:0}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@keyframes ld-shim{from{background-position:150% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){.ld-suggest,.ld-suggest *,.ld-suggest *::before,.ld-suggest *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-suggest" data-s="load">
+  <div class="in"><svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg><span>蓝牙</span><i class="sp"></i></div>
+  <div class="pop" aria-live="polite">
+    <div class="sk" aria-hidden="true"><b style="width:70%"></b><b style="width:55%"></b><b style="width:80%"></b></div>
+    <div class="rs"><span><em>蓝牙</em>耳机</span><span><em>蓝牙</em>音箱</span><span><em>蓝牙</em>键盘</span></div>
+  </div>
+</div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const c=root.querySelector('.ld-suggest');
+  while(true){c.dataset.s='load';await W(1500);c.dataset.s='done';await W(2200);}
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

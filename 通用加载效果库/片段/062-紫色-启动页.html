@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>启动页 · 紫色</title>
+<!-- 图标淡入，下方细条来回滑动。用于应用启动、首次进入。　节奏：3.2 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#8C49CF;--ld-main-d:#803AC6;--ld-accent:#A477D2;--ld-accent-l:#CAAAEA;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#662CA0;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 启动页 */
+.ld-splash{display:flex;flex-direction:column;align-items:center;gap:14px}
+.ld-splash .lg{display:grid;place-items:center;width:60px;height:60px;border-radius:16px;background:var(--ld-main);color:#fff;font:800 28px/1 var(--ld-num);box-shadow:0 10px 24px rgba(140,73,207,.3);animation:ld-spl 3.2s var(--ld-ease) infinite}
+.ld-splash .tr{width:96px;height:3px;border-radius:2px;background:var(--ld-track);overflow:hidden}
+.ld-splash .tr i{display:block;width:40%;height:100%;border-radius:inherit;background:var(--ld-main);animation:ld-spb 1.1s ease-in-out infinite}
+.ld-splash small{font-size:12px;color:var(--ld-mute)}
+@keyframes ld-spl{0%{transform:scale(.7);opacity:0}14%,86%{transform:none;opacity:1}100%{transform:scale(1.06);opacity:0}}
+@keyframes ld-spb{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
+@media (prefers-reduced-motion: reduce){.ld-splash,.ld-splash *,.ld-splash *::before,.ld-splash *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-splash" role="status" aria-label="正在启动"><span class="lg">A</span><span class="tr"><i></i></span><small>正在启动</small></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

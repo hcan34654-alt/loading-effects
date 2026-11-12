@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>文档扫描 · 青色</title>
+<!-- 扫描线从上到下扫过文档，扫过的行依次打勾。用于识别、审核中。　节奏：3 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#229AAA;--ld-main-d:#238997;--ld-accent:#34ACBC;--ld-accent-l:#49CCDD;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1A6F7A;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 文档扫描 */
+.ld-scanw{display:flex;flex-direction:column;align-items:center;gap:10px}
+.ld-scan{position:relative;width:150px;height:168px}
+.ld-scan .sheet{position:absolute;inset:0;display:flex;flex-direction:column;gap:11px;padding:20px 16px;border-radius:10px;background:#fff;box-shadow:0 10px 28px rgba(20,24,31,.09)}
+.ld-scan .sheet b{height:7px;border-radius:4px;background:var(--ld-track)}
+.ld-scan .sheet b:nth-child(1){width:55%;background:#DDE1E8}
+.ld-scan .sheet b:nth-child(2){width:88%}.ld-scan .sheet b:nth-child(3){width:70%}
+.ld-scan .sheet b:nth-child(4){width:82%}.ld-scan .sheet b:nth-child(5){width:60%}.ld-scan .sheet b:nth-child(6){width:76%}
+.ld-scan .m{position:absolute;right:18px;width:15px;height:8px;border-left:2.5px solid var(--ld-main);border-bottom:2.5px solid var(--ld-main);transform:rotate(-45deg) scale(0);opacity:0}
+.ld-scan .m1{top:24%;animation:ld-m1 3s infinite}
+.ld-scan .m2{top:49%;animation:ld-m2 3s infinite}
+.ld-scan .m3{top:74%;animation:ld-m3 3s infinite}
+@keyframes ld-m1{0%,12%{transform:rotate(-45deg) scale(0);opacity:0}17%,82%{transform:rotate(-45deg) scale(1);opacity:1}92%,100%{opacity:0}}
+@keyframes ld-m2{0%,32%{transform:rotate(-45deg) scale(0);opacity:0}37%,82%{transform:rotate(-45deg) scale(1);opacity:1}92%,100%{opacity:0}}
+@keyframes ld-m3{0%,52%{transform:rotate(-45deg) scale(0);opacity:0}57%,82%{transform:rotate(-45deg) scale(1);opacity:1}92%,100%{opacity:0}}
+.ld-scan .beam{position:absolute;left:-10px;right:-10px;top:6%;height:3px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--ld-main) 20%,var(--ld-accent-l) 50%,var(--ld-main) 80%,transparent);box-shadow:0 0 14px 3px rgba(34,154,170,.3);animation:ld-beam 3s cubic-bezier(.45,0,.55,1) infinite}
+.ld-scan .beam::before{content:"";position:absolute;left:10px;right:10px;bottom:100%;height:44px;background:linear-gradient(to bottom,transparent,rgba(34,154,170,.09))}
+@keyframes ld-beam{0%{top:6%;opacity:0}6%{opacity:1}66%{top:92%;opacity:1}74%,100%{top:92%;opacity:0}}
+.ld-scanw p{margin:0;font-size:12.5px;color:var(--ld-ink2)}
+@media (prefers-reduced-motion: reduce){.ld-scan,.ld-scan *,.ld-scan *::before,.ld-scan *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-scanw" role="status" aria-label="正在扫描">
+  <div class="ld-scan" aria-hidden="true">
+    <div class="sheet"><b></b><b></b><b></b><b></b><b></b><b></b></div>
+    <s class="m m1"></s><s class="m m2"></s><s class="m m3"></s>
+    <span class="beam"></span>
+  </div>
+  <p>正在扫描文档</p>
+</div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

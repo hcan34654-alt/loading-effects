@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>双环反转 · 黄色</title>
+<!-- 内外两个环反向旋转。通用的页面级加载。　节奏：1.2 秒 / 0.9 秒 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E3A71C;--ld-main-d:#C9961F;--ld-accent:#DCB24F;--ld-accent-l:#F1CE7E;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A37916;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 双环反转 */
+.ld-dual{position:relative;width:58px;height:58px}
+.ld-dual::before,.ld-dual::after{content:"";position:absolute;border-radius:50%;border:4px solid transparent}
+.ld-dual::before{inset:0;border-top-color:var(--ld-main);border-bottom-color:var(--ld-main);animation:ld-rot 1.2s cubic-bezier(.6,.2,.4,.8) infinite}
+.ld-dual::after{inset:12px;border-left-color:var(--ld-accent);border-right-color:var(--ld-accent);animation:ld-rot .9s linear infinite reverse}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-dual,.ld-dual *,.ld-dual *::before,.ld-dual *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-dual" role="status" aria-label="加载中"></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

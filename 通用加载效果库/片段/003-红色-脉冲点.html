@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>脉冲点 · 红色</title>
+<!-- 圆点向外扩散两圈光晕。用于表示实时连接中、直播中、录制中。　节奏：1.6 秒一次 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E31C29;--ld-main-d:#C91F2A;--ld-accent:#DC4F58;--ld-accent-l:#F17E86;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A3161F;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 脉冲点 */
+.ld-pulse{position:relative;width:18px;height:18px;border-radius:50%;background:var(--ld-main)}
+.ld-pulse::before,.ld-pulse::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--ld-main);animation:ld-ping 1.6s ease-out infinite}
+.ld-pulse::after{animation-delay:.8s}
+@keyframes ld-ping{0%{transform:scale(1);opacity:.55}100%{transform:scale(3.6);opacity:0}}
+@media (prefers-reduced-motion: reduce){.ld-pulse,.ld-pulse *,.ld-pulse *::before,.ld-pulse *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-pulse" role="status" aria-label="连接中"></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>信号重连 · 黄色</title>
+<!-- 信号格从内到外依次亮起。用于断网重连。　节奏：1.6 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E3A71C;--ld-main-d:#C9961F;--ld-accent:#DCB24F;--ld-accent-l:#F1CE7E;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A37916;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 信号重连 */
+.ld-wifi{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ld-wifi svg{width:80px;height:62px}
+.ld-wifi path{fill:none;stroke-width:6;stroke-linecap:round;stroke:#DDE1E8;animation:ld-wf 1.6s ease infinite}
+.ld-wifi circle{fill:var(--ld-main)}
+.ld-wifi path:nth-of-type(1){animation-delay:.1s}.ld-wifi path:nth-of-type(2){animation-delay:.35s}.ld-wifi path:nth-of-type(3){animation-delay:.6s}
+.ld-wifi p{margin:0;font-size:12.5px;color:var(--ld-ink2)}
+@keyframes ld-wf{0%{stroke:#DDE1E8}20%,60%{stroke:var(--ld-main)}80%,100%{stroke:#DDE1E8}}
+@media (prefers-reduced-motion: reduce){.ld-wifi,.ld-wifi *,.ld-wifi *::before,.ld-wifi *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-wifi" role="status" aria-label="正在重新连接">
+  <svg viewBox="0 0 80 62"><circle cx="40" cy="52" r="5"/><path d="M28 40a17 17 0 0 1 24 0"/><path d="M18 30a31 31 0 0 1 44 0"/><path d="M8 20a45 45 0 0 1 64 0"/></svg>
+  <p>正在重新连接…</p>
+</div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

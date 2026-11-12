@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>支付处理中 · 粉色</title>
+<!-- 卡片上扫过一道高光，下方提示不要关闭页面。用于支付、转账确认中。　节奏：1.6 秒扫光 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E52A81;--ld-main-d:#D52175;--ld-accent:#DF5E9A;--ld-accent-l:#F392BF;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#AD175D;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 支付处理中 */
+.ld-pay{display:flex;flex-direction:column;align-items:center;gap:12px}
+.ld-pay .card{position:relative;width:150px;height:94px;border-radius:12px;background:linear-gradient(135deg,var(--ld-main),var(--ld-main-d));box-shadow:0 10px 24px rgba(229,42,129,.28);overflow:hidden}
+.ld-pay .card::before{content:"";position:absolute;left:16px;top:18px;width:26px;height:20px;border-radius:4px;background:rgba(255,255,255,.75)}
+.ld-pay .card::after{content:"";position:absolute;top:0;bottom:0;left:0;width:60px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-80px) skewX(-15deg);animation:ld-paysw 1.6s ease-in-out infinite}
+.ld-pay .card i{position:absolute;left:16px;right:16px;bottom:16px;height:6px;border-radius:3px;background:rgba(255,255,255,.45)}
+.ld-pay p{margin:0;font-size:13px;color:var(--ld-ink2)}
+@keyframes ld-paysw{to{transform:translateX(190px) skewX(-15deg)}}
+@media (prefers-reduced-motion: reduce){.ld-pay,.ld-pay *,.ld-pay *::before,.ld-pay *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-pay" role="status"><div class="card" aria-hidden="true"><i></i></div><p>支付处理中，请勿关闭页面</p></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

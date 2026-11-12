@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>视频骨架 · 黑灰色</title>
+<!-- 16:9 深色占位，播放键缓慢闪动，下面两行标题骨架。　节奏：1.6 秒呼吸 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2E2E2E;--ld-main-d:#2B2B2B;--ld-accent:#8E8E8E;--ld-accent-l:#989898;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#262626;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 视频骨架 */
+.ld-skvideo{width:270px}
+.ld-skvideo .v{position:relative;display:grid;place-items:center;aspect-ratio:16/9;border-radius:12px;background:linear-gradient(135deg,#2A2F38,#1A1D23);overflow:hidden}
+.ld-skvideo .p{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center;animation:ld-br 1.6s ease-in-out infinite}
+.ld-skvideo .p::after{content:"";margin-left:4px;border-left:14px solid rgba(255,255,255,.75);border-top:9px solid transparent;border-bottom:9px solid transparent}
+.ld-skvideo .bar{position:absolute;left:12px;right:12px;bottom:10px;height:3px;border-radius:2px;background:linear-gradient(90deg,rgba(255,255,255,.12) 25%,rgba(255,255,255,.4) 37%,rgba(255,255,255,.12) 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+.ld-skvideo b{display:block;height:9px;margin-top:10px;border-radius:5px;background:linear-gradient(90deg,#EEF0F4 25%,#F8F9FB 37%,#EEF0F4 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+@keyframes ld-br{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.1);opacity:1}}
+@keyframes ld-shim{from{background-position:150% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){.ld-skvideo,.ld-skvideo *,.ld-skvideo *::before,.ld-skvideo *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-skvideo" role="status" aria-busy="true" aria-label="视频加载中"><div class="v"><span class="p"></span><span class="bar"></span></div><b style="width:70%"></b><b style="width:40%"></b></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

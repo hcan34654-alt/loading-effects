@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>开关切换中 · 绿色</title>
+<!-- 开关滑块内先转圈，保存成功后再切到开启状态。用于需要请求服务器的设置项。　节奏：3 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#299E63;--ld-main-d:#298C5A;--ld-accent:#3AAF75;--ld-accent-l:#4CD38F;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1F7148;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 开关切换中 */
+.ld-toggle{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--ld-ink2)}
+.ld-toggle .t{position:relative;width:54px;height:32px;border-radius:16px;background:#D6DAE1;animation:ld-ttrack 3s ease infinite}
+.ld-toggle .k{position:absolute;top:3px;left:3px;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18);animation:ld-tknob 3s var(--ld-ease) infinite}
+.ld-toggle .k::after{content:"";width:12px;height:12px;border-radius:50%;border:2px solid var(--ld-track);border-top-color:var(--ld-main);opacity:0;animation:ld-rot .7s linear infinite,ld-tspin 3s infinite}
+@keyframes ld-tspin{0%,15%{opacity:0}20%,45%{opacity:1}50%,100%{opacity:0}}
+@keyframes ld-tknob{0%,48%{transform:none}56%,88%{transform:translateX(22px)}96%,100%{transform:none}}
+@keyframes ld-ttrack{0%,48%{background:#D6DAE1}56%,88%{background:var(--ld-main)}96%,100%{background:#D6DAE1}}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-toggle,.ld-toggle *,.ld-toggle *::before,.ld-toggle *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<label class="ld-toggle" role="status" aria-label="保存设置中"><span class="t"><span class="k"></span></span>消息通知</label>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

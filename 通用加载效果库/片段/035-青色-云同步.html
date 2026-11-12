@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>云同步 · 青色</title>
+<!-- 云图标内的同步箭头旋转。用于云端同步中。　节奏：1.6 秒一圈 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#229AAA;--ld-main-d:#238997;--ld-accent:#34ACBC;--ld-accent-l:#49CCDD;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1A6F7A;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 云同步 */
+.ld-cloud{display:flex;flex-direction:column;align-items:center}
+.ld-cloud svg{width:96px;height:68px;animation:ld-float 3s ease-in-out infinite}
+.ld-cloud .c{fill:#F1FDFF;stroke:var(--ld-main);stroke-width:2.5;stroke-linejoin:round}
+.ld-cloud .s{fill:none;stroke:var(--ld-main);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transform-origin:48px 40px;animation:ld-rot 1.6s linear infinite}
+@keyframes ld-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.ld-cloud p{margin:4px 0 0;font-size:12.5px;color:var(--ld-ink2)}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-cloud,.ld-cloud *,.ld-cloud *::before,.ld-cloud *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-cloud" role="status" aria-label="同步中">
+  <svg viewBox="0 0 96 68"><path class="c" d="M26 60a18 18 0 0 1-2-36 24 24 0 0 1 46 2 16 16 0 0 1 2 34z"/>
+    <g class="s"><path d="M38 36a10 10 0 0 1 17-6"/><path d="M56 25v6h-6"/><path d="M58 44a10 10 0 0 1-17 6"/><path d="M40 55v-6h6"/></g></svg>
+  <p>正在同步</p>
+</div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

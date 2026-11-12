@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>上拉加载更多 · 蓝色</title>
+<!-- 滚到列表底部时底栏显示加载中，新数据接在后面。　节奏：约 4.3 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2F79DB;--ld-main-d:#296EC8;--ld-accent:#6093D7;--ld-accent-l:#90B9ED;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1E57A2;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 上拉加载更多 */
+.ld-loadmore{width:240px;border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 8px 24px rgba(20,24,31,.07)}
+.ld-loadmore .vp{height:124px;margin:10px 10px 0;overflow:hidden}
+.ld-loadmore .in{display:flex;flex-direction:column;gap:8px;transition:transform .5s var(--ld-ease)}
+.ld-loadmore .row{flex:none;display:flex;align-items:center;gap:10px;height:36px;padding:0 10px;border-radius:8px;background:#F7F8FA;font-size:12.5px;color:var(--ld-ink2)}
+.ld-loadmore .row i{width:18px;height:18px;border-radius:5px;background:#E3E6EC}
+.ld-loadmore .row.new{background:#F3F8FF}
+.ld-loadmore[data-s=done] .in{transform:translateY(-88px)}
+.ld-loadmore .ft{display:flex;align-items:center;justify-content:center;gap:8px;height:40px;font-size:12px;color:var(--ld-mute)}
+.ld-loadmore .sp{flex:none;display:inline-block;box-sizing:border-box;width:14px;height:14px;border-radius:50%;border:2px solid var(--ld-track);border-top-color:var(--ld-main);animation:ld-rot .8s linear infinite}
+.ld-loadmore[data-s=idle] .sp,.ld-loadmore[data-s=done] .sp{display:none}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-loadmore,.ld-loadmore *,.ld-loadmore *::before,.ld-loadmore *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-loadmore" data-s="idle"><div class="vp"><div class="in"><div class="row"><i></i>订单 #1021 · 已签收</div><div class="row"><i></i>订单 #1022 · 已签收</div><div class="row"><i></i>订单 #1023 · 运输中</div><div class="row new"><i></i>订单 #1024 · 已发货</div><div class="row new"><i></i>订单 #1025 · 待发货</div></div></div><div class="ft" role="status"><i class="sp"></i><span class="t">上拉加载更多</span></div></div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const c=root.querySelector('.ld-loadmore'),t=c.querySelector('.t');
+  while(true){
+    c.dataset.s='idle';t.textContent='上拉加载更多';await W(1100);
+    c.dataset.s='load';t.textContent='正在加载…';await W(1300);
+    c.dataset.s='done';t.textContent='已加载 2 条';await W(1900);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

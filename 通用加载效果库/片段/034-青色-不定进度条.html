@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>不定进度条 · 青色</title>
+<!-- 一长一短两段在细轨里先后划过。用于不知道要多久的等待。　节奏：2.1 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#229AAA;--ld-main-d:#238997;--ld-accent:#34ACBC;--ld-accent-l:#49CCDD;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1A6F7A;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 不定进度条 */
+.ld-indw{width:240px}
+.ld-ind{position:relative;height:4px;border-radius:2px;background:var(--ld-track);overflow:hidden}
+.ld-ind::before,.ld-ind::after{content:"";position:absolute;top:0;bottom:0;border-radius:inherit}
+.ld-ind::before{background:var(--ld-main);animation:ld-ind1 2.1s cubic-bezier(.65,.815,.735,.395) infinite}
+.ld-ind::after{background:var(--ld-accent);animation:ld-ind2 2.1s cubic-bezier(.165,.84,.44,1) 1.15s infinite}
+@keyframes ld-ind1{0%{left:-35%;right:100%}60%,100%{left:100%;right:-90%}}
+@keyframes ld-ind2{0%{left:-200%;right:100%}60%,100%{left:107%;right:-8%}}
+.ld-cap{margin:12px 0 0;font-size:12.5px;color:var(--ld-ink2);text-align:center}
+@media (prefers-reduced-motion: reduce){.ld-ind,.ld-ind *,.ld-ind *::before,.ld-ind *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-indw" role="progressbar" aria-label="同步中"><div class="ld-ind"></div><p class="ld-cap">正在同步数据</p></div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

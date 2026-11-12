@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>下载箭头 · 橙色</title>
+<!-- 下载图标里的箭头循环下落，下方有细进度条。　节奏：1.4 秒一次 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E3651C;--ld-main-d:#C95D1F;--ld-accent:#DC834F;--ld-accent-l:#F1A87E;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A34A16;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 下载箭头 */
+.ld-dl{display:flex;flex-direction:column;align-items:center;gap:12px}
+.ld-dl .ic{position:relative;width:64px;height:64px;border-radius:50%;background:#FFF6F1;overflow:hidden}
+.ld-dl svg{position:absolute;inset:0;width:64px;height:64px;fill:none;stroke:var(--ld-main);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ld-dl .ar{animation:ld-dla 1.4s cubic-bezier(.5,0,.5,1) infinite}
+.ld-dl .ln{width:120px;height:4px;border-radius:2px;background:var(--ld-track);overflow:hidden}
+.ld-dl .ln i{display:block;height:100%;background:var(--ld-main);border-radius:inherit;animation:ld-dlp 1.4s ease-in-out infinite}
+@keyframes ld-dla{0%{transform:translateY(-26px);opacity:0}30%{opacity:1}60%{transform:translateY(0)}100%{transform:translateY(14px);opacity:0}}
+@keyframes ld-dlp{from{width:0}to{width:100%}}
+@media (prefers-reduced-motion: reduce){.ld-dl,.ld-dl *,.ld-dl *::before,.ld-dl *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-dl" role="status" aria-label="下载中">
+  <span class="ic"><svg viewBox="0 0 64 64"><g class="ar"><path d="M32 18v20M24 31l8 8 8-8"/></g><path d="M22 46h20"/></svg></span>
+  <span class="ln"><i></i></span>
+</div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>逐字输出 · 紫色</title>
+<!-- 文字逐字输出，末尾带闪烁光标。用于 AI 回答、生成内容。　节奏：逐字 45–100 ms -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#8C49CF;--ld-main-d:#803AC6;--ld-accent:#A477D2;--ld-accent-l:#CAAAEA;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#662CA0;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 逐字输出 */
+.ld-stream{width:300px;max-width:calc(100% - 28px);box-sizing:border-box;padding:16px 18px;border-radius:16px;background:#fff;box-shadow:0 8px 24px rgba(20,24,31,.08)}
+.ld-stream .hd{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ld-mute);margin-bottom:8px}
+.ld-stream .hd b{display:inline-grid;place-items:center;height:20px;padding:0 7px;border-radius:6px;background:linear-gradient(135deg,var(--ld-main),#A972E0);color:#fff;font-size:11px;letter-spacing:.04em}
+.ld-stream .tx{margin:0;min-height:66px;font-size:14px;line-height:1.7;color:var(--ld-ink)}
+.ld-stream .tx::after{content:"";display:inline-block;width:2px;height:1.05em;margin-left:2px;vertical-align:-3px;border-radius:1px;background:var(--ld-accent);animation:ld-blink 1s steps(1) infinite}
+@keyframes ld-blink{50%{opacity:0}}
+@media (prefers-reduced-motion: reduce){.ld-stream,.ld-stream *,.ld-stream *::before,.ld-stream *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-stream" role="status" aria-live="polite">
+  <div class="hd"><b>AI</b>正在生成回答</div>
+  <p class="tx"></p>
+</div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const t=root.querySelector('.ld-stream .tx');
+  const s='加载状态要说清楚正在做什么。超过两秒就给出进度，让等待的人知道还要多久。';
+  while(true){
+    t.textContent='';
+    for(const ch of s){t.textContent+=ch;await W(45+Math.random()*60);}
+    await W(1800);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

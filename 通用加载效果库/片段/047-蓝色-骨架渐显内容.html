@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>骨架渐显内容 · 蓝色</title>
+<!-- 骨架和真实内容占同一位置，数据到位后淡入替换，布局不跳动。　节奏：约 4 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#2F79DB;--ld-main-d:#296EC8;--ld-accent:#6093D7;--ld-accent-l:#90B9ED;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#1E57A2;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 骨架渐显内容 */
+.ld-reveal{position:relative;width:290px;height:104px;border-radius:16px;background:#fff;box-shadow:0 8px 24px rgba(20,24,31,.07)}
+.ld-reveal .layer{position:absolute;inset:18px;display:flex;gap:14px;align-items:center;transition:opacity .45s var(--ld-ease),transform .45s var(--ld-ease)}
+.ld-reveal .layer>div{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.ld-reveal .av{flex:none;width:56px;height:56px;border-radius:12px}
+.ld-reveal .sk .av,.ld-reveal .sk b{background:linear-gradient(90deg,#EEF0F4 25%,#F8F9FB 37%,#EEF0F4 63%);background-size:300% 100%;animation:ld-shim 1.4s linear infinite}
+.ld-reveal .sk b{height:10px;border-radius:5px}
+.ld-reveal .real{opacity:0;transform:translateY(4px)}
+.ld-reveal .real .av{display:grid;place-items:center;background:linear-gradient(135deg,var(--ld-main),#5696E9);color:#fff;font-size:22px;font-weight:800}
+.ld-reveal h4{margin:0;font-size:15px;color:var(--ld-ink)}
+.ld-reveal p{margin:0;font-size:12px;color:var(--ld-mute)}
+.ld-reveal .bar{height:5px;border-radius:3px;background:var(--ld-track);overflow:hidden}
+.ld-reveal .bar span{display:block;height:100%;width:68%;border-radius:inherit;background:linear-gradient(90deg,var(--ld-main),var(--ld-accent));transform:scaleX(0);transform-origin:left;transition:transform .8s .25s var(--ld-ease)}
+.ld-reveal[data-on] .sk{opacity:0}
+.ld-reveal[data-on] .real{opacity:1;transform:none}
+.ld-reveal[data-on] .bar span{transform:none}
+@keyframes ld-shim{from{background-position:150% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){.ld-reveal,.ld-reveal *,.ld-reveal *::before,.ld-reveal *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-reveal" aria-busy="true">
+  <div class="layer sk" aria-hidden="true"><i class="av"></i><div><b style="width:62%"></b><b style="width:88%"></b><b style="width:70%"></b></div></div>
+  <div class="layer real"><i class="av">A</i><div><h4>项目进度周报</h4><p>10 分钟前更新 · 已完成 68%</p><span class="bar"><span></span></span></div></div>
+</div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const c=root.querySelector('.ld-reveal');
+  while(true){
+    c.removeAttribute('data-on');c.setAttribute('aria-busy','true');await W(1900);
+    c.setAttribute('data-on','');c.removeAttribute('aria-busy');await W(2400);
+  }
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

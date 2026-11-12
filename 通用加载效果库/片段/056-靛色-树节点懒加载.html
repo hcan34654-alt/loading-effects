@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>树节点懒加载 · 靛色</title>
+<!-- 点开节点时箭头位置先转圈，子节点拿到后再展开。用于目录、文件树。　节奏：约 4.5 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#5155D7;--ld-main-d:#4045CD;--ld-accent:#8285D9;--ld-accent-l:#BABCF0;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#2A2EAD;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 树节点懒加载 */
+.ld-tree{width:240px;height:200px;padding:10px;box-sizing:border-box;border-radius:12px;background:#fff;font-size:13px;color:var(--ld-ink2)}
+.ld-tree .nd{display:flex;align-items:center;gap:6px;height:32px;padding:0 6px;border-radius:6px}
+.ld-tree .cur{background:#F7F8FA;color:var(--ld-ink);font-weight:600}
+.ld-tree .ic{position:relative;flex:none;width:14px;height:14px}
+.ld-tree .ic>*{position:absolute;inset:0;transition:opacity .2s,transform .3s}
+.ld-tree svg{fill:none;stroke:var(--ld-mute);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ld-tree .sp{flex:none;display:inline-block;box-sizing:border-box;width:14px;height:14px;border-radius:50%;border:2px solid var(--ld-track);border-top-color:var(--ld-main);animation:ld-rot .8s linear infinite}
+.ld-tree[data-s=load] .cur svg,.ld-tree[data-s=idle] .sp,.ld-tree[data-s=open] .sp{opacity:0}
+.ld-tree[data-s=open] .cur svg{transform:rotate(90deg)}
+.ld-tree .kids{max-height:0;padding-left:26px;overflow:hidden;transition:max-height .45s ease}
+.ld-tree[data-s=open] .kids{max-height:90px}
+.ld-tree .kids span{display:block;height:28px;line-height:28px;font-size:12.5px}
+@keyframes ld-rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.ld-tree,.ld-tree *,.ld-tree *::before,.ld-tree *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#F4F5F7;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-tree" data-s="idle">
+  <div class="nd"><span class="ic"><svg viewBox="0 0 14 14"><path d="M5 3l4 4-4 4"/></svg></span>文档</div>
+  <div class="nd cur"><span class="ic"><svg viewBox="0 0 14 14"><path d="M5 3l4 4-4 4"/></svg><i class="sp"></i></span>项目</div>
+  <div class="kids"><span>设计稿</span><span>需求文档</span><span>会议记录</span></div>
+  <div class="nd"><span class="ic"><svg viewBox="0 0 14 14"><path d="M5 3l4 4-4 4"/></svg></span>归档</div>
+</div>
+<!-- ▲ 到这里结束 -->
+<script>
+(()=>{
+const root=document,sig={dead:false};
+const W=ms=>new Promise((r,j)=>setTimeout(()=>sig.dead?j():r(),ms));
+(async()=>{try{
+  const c=root.querySelector('.ld-tree');
+  while(true){c.dataset.s='idle';await W(1100);c.dataset.s='load';await W(1100);c.dataset.s='open';await W(2300);}
+}catch(e){}})();
+})();
+</script>
+</body>
+</html>

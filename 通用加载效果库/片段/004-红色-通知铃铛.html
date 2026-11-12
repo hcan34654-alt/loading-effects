@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>通知铃铛 · 红色</title>
+<!-- 铃铛摇动后弹出未读数。用于拉取新通知。　节奏：1.8 秒一轮 -->
+<style>
+/* ── 颜色令牌：改 --ld-main / --ld-accent 可换主色 ── */
+:root{--ld-main:#E31C29;--ld-main-d:#C91F2A;--ld-accent:#DC4F58;--ld-accent-l:#F17E86;--ld-ink:#14181F;--ld-ink2:#4A5260;
+  --ld-mute:#8A93A2;--ld-line:#E3E6EC;--ld-track:#EEF0F4;--ld-ok:#A3161F;--ld-ease:cubic-bezier(.2,.8,.2,1);
+  --ld-num:"DIN Alternate","Bahnschrift","SF Pro Display",system-ui,sans-serif}
+
+/* ── 效果样式 ── */
+/* 通知铃铛 */
+.ld-bell{position:relative;width:70px;height:74px}
+.ld-bell svg{width:70px;height:74px;overflow:visible}
+.ld-bell .bd{transform-origin:35px 8px;animation:ld-bsw 1.8s ease-in-out infinite}
+.ld-bell .cl{transform-origin:35px 8px;animation:ld-bsw 1.8s ease-in-out .08s infinite}
+.ld-bell path{fill:#fff;stroke:var(--ld-ink);stroke-width:3;stroke-linejoin:round}
+.ld-bell .cl circle{fill:var(--ld-ink)}
+.ld-bell b{position:absolute;right:2px;top:2px;display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:10px;border:2px solid #fff;background:var(--ld-main);color:#fff;font:700 11px/1 var(--ld-num);animation:ld-badge 1.8s var(--ld-ease) infinite}
+@keyframes ld-bsw{0%,60%,100%{transform:rotate(0)}10%{transform:rotate(16deg)}22%{transform:rotate(-14deg)}34%{transform:rotate(10deg)}46%{transform:rotate(-6deg)}}
+@keyframes ld-badge{0%,40%{transform:scale(0)}50%{transform:scale(1.25)}58%,92%{transform:scale(1)}100%{transform:scale(0)}}
+@media (prefers-reduced-motion: reduce){.ld-bell,.ld-bell *,.ld-bell *::before,.ld-bell *::after{animation-duration:2.4s!important;transition-duration:.01s!important}}
+
+/* ── 预览舞台（复用时删掉）── */
+html,body{height:100%;margin:0}
+body{display:grid;place-items:center;background:#FFFFFF;font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<!-- ▼ 复用的 HTML 从这里开始 -->
+<div class="ld-bell" role="status" aria-label="获取通知中">
+  <svg viewBox="0 0 70 74"><g class="cl"><circle cx="35" cy="62" r="6"/></g><g class="bd"><path d="M35 8a3 3 0 0 1 3 3v2a17 17 0 0 1 14 17v13l6 8H12l6-8V30a17 17 0 0 1 14-17v-2a3 3 0 0 1 3-3z"/></g></svg>
+  <b>3</b>
+</div>
+<!-- ▲ 到这里结束 -->
+</body>
+</html>
